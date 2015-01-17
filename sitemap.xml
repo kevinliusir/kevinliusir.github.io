@@ -5,56 +5,56 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>/</loc>
-<lastmod>2015-01-07T17:37:50-00:00</lastmod>
+<lastmod>2015-01-17T12:59:18-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>/archives.html</loc>
-<lastmod>2015-01-07T17:37:50-00:00</lastmod>
+<lastmod>2015-01-17T12:59:18-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>/tags.html</loc>
-<lastmod>2015-01-07T17:37:50-00:00</lastmod>
+<lastmod>2015-01-17T12:59:18-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>/categories.html</loc>
-<lastmod>2015-01-07T17:37:50-00:00</lastmod>
+<lastmod>2015-01-17T12:59:18-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/pages/2015/01/07/test/</loc>
-<lastmod>2015-01-07T10:30:00+01:00</lastmod>
+<loc>/pages/2015/01/07/puppet_install/</loc>
+<lastmod>2015-01-07T10:30:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/category/.html</loc>
-<lastmod>2015-01-07T10:30:00+00:09</lastmod>
+<loc>/category/yun-wei-zi-dong-hua.html</loc>
+<lastmod>2015-01-07T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/tag/test.html</loc>
-<lastmod>2015-01-07T10:30:00+00:09</lastmod>
+<loc>/tag/puppet.html</loc>
+<lastmod>2015-01-07T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>/author/kevin.html</loc>
-<lastmod>2015-01-07T10:30:00+00:09</lastmod>
+<lastmod>2015-01-07T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
