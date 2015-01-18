@@ -118,71 +118,71 @@ agent.feisblog.com  192.168.212.110</p>
 <h2>1. 创建模块目录</h2>
 <p><code>#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}</code></p>
 <h2>2. 创建安装httpd类</h2>
-<div class="highlight"><pre><span class="c-Singleline">#httpd/manifests/install.pp </span>
-<span class="k">class</span> <span class="n">httpd::install</span> { 
-     <span class="k">package</span> { [ <span class="s">&quot;httpd&quot;</span> ]: 
-   <span class="n">ensure</span> =&gt; <span class="n">present</span>,
-   }
-}
+<div class="highlight"><pre><span class="c1">#vim /etc/puppet/modules/httpd/manifests/install.pp </span>
+<span class="k">class</span> <span class="n">httpd</span><span class="o">::</span><span class="n">install</span> <span class="p">{</span> 
+     <span class="n">package</span> <span class="p">{</span> <span class="o">[</span> <span class="s2">&quot;httpd&quot;</span> <span class="o">]</span><span class="p">:</span> 
+       <span class="k">ensure</span> <span class="o">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+   <span class="p">}</span>
+<span class="p">}</span>   
 </pre></div>
 
 
 <h2>3. 创建启动httpd服务类</h2>
-<div class="highlight"><pre>**httpd/manifests/service.pp**   
-class httpd::service {
-  service { &quot;httpd&quot;:
-    ensure =&gt; running,
-    hasstatus =&gt; true,
-    hasrestart =&gt; true,
-    enable =&gt; true,
-    require =&gt; Class[&quot;httpd::install&quot;],
-  }
-}
+<div class="highlight"><pre><span class="c1">#vim /etc/puppet/modules/httpd/manifests/service.pp  </span>
+<span class="k">class</span> <span class="n">httpd</span><span class="o">::</span><span class="n">service</span> <span class="p">{</span>
+  <span class="n">service</span> <span class="p">{</span> <span class="s2">&quot;httpd&quot;</span><span class="p">:</span>
+    <span class="k">ensure</span> <span class="o">=&gt;</span> <span class="n">running</span><span class="p">,</span>
+    <span class="n">hasstatus</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+    <span class="n">hasrestart</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+    <span class="n">enable</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+    <span class="nb">require</span> <span class="o">=&gt;</span> <span class="no">Class</span><span class="o">[</span><span class="s2">&quot;httpd::install&quot;</span><span class="o">]</span><span class="p">,</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <h2>4. 创建httpd 配置文件类，配置文件通过puppet获取（目录：/etc/puppet/modules/httpd/files/httpd.conf）</h2>
-<div class="highlight"><pre>**#httpd/manifests/conf.pp**
-class httpd::conf {
-  file { &quot;httpd.conf&quot;:
-    ensure =&gt; present,
-    owner =&gt; &#39;root&#39;,
-    group =&gt; &#39;root&#39;,
-    mode =&gt; &#39;644&#39;,
-    path =&gt; &#39;/etc/httpd/conf/httpd.conf&#39;,
-    source =&gt; &#39;puppet:///modules/httpd/httpd.conf&#39;,
-    require =&gt; Class[&quot;httpd::install&quot;], 
-    notify =&gt; Class[&quot;httpd::service&quot;], 
-  }
-}
+<div class="highlight"><pre><span class="c1">#vim /etc/puppet/modules/httpd/manifests/conf.pp</span>
+<span class="k">class</span> <span class="n">httpd</span><span class="o">::</span><span class="n">conf</span> <span class="p">{</span>
+  <span class="n">file</span> <span class="p">{</span> <span class="s2">&quot;httpd.conf&quot;</span><span class="p">:</span>
+    <span class="k">ensure</span> <span class="o">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+    <span class="n">owner</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+    <span class="n">group</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+    <span class="n">mode</span> <span class="o">=&gt;</span> <span class="s1">&#39;644&#39;</span><span class="p">,</span>
+    <span class="n">path</span> <span class="o">=&gt;</span> <span class="s1">&#39;/etc/httpd/conf/httpd.conf&#39;</span><span class="p">,</span>
+    <span class="n">source</span> <span class="o">=&gt;</span> <span class="s1">&#39;puppet:///modules/httpd/httpd.conf&#39;</span><span class="p">,</span>
+    <span class="nb">require</span> <span class="o">=&gt;</span> <span class="no">Class</span><span class="o">[</span><span class="s2">&quot;httpd::install&quot;</span><span class="o">]</span><span class="p">,</span> 
+    <span class="n">notify</span> <span class="o">=&gt;</span> <span class="no">Class</span><span class="o">[</span><span class="s2">&quot;httpd::service&quot;</span><span class="o">]</span><span class="p">,</span> 
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <h2>5. 创建主配置文件init.pp</h2>
-<div class="highlight"><pre>**httpd/manifests/init.pp **
-class httpd { 
-    include httpd::install, httpd::service, httpd::conf
-}
+<div class="highlight"><pre><span class="c1">#vim /etc/puppet/modules/httpd/manifests/init.pp</span>
+<span class="k">class</span> <span class="n">httpd</span> <span class="p">{</span> 
+    <span class="kp">include</span> <span class="n">httpd</span><span class="o">::</span><span class="n">install</span><span class="p">,</span> <span class="n">httpd</span><span class="o">::</span><span class="n">service</span><span class="p">,</span> <span class="n">httpd</span><span class="o">::</span><span class="n">conf</span>
+<span class="p">}</span> 
 </pre></div>
 
 
 <h2>6. 配置客户端节点</h2>
-<div class="highlight"><pre>#vim /etc/puppet/manifests/nodes/agent.feisblog.com.pp
-node &#39;agent.feisblog.com&#39; {
-    include httpd
-}
+<div class="highlight"><pre><span class="c1">#vim /etc/puppet/manifests/nodes/agent.feisblog.com.pp</span>
+<span class="n">node</span> <span class="s1">&#39;agent.feisblog.com&#39;</span> <span class="p">{</span>
+   <span class="kp">include</span> <span class="n">httpd</span>
+<span class="p">}</span> 
 </pre></div>
 
 
 <h2>7. 将节点载入puppet的site.pp 文件</h2>
-<div class="highlight"><pre> <span class="c">#vim /etc/puppet/manifests/site.pp</span>
- <span class="kn">import</span> <span class="s">&quot;nodes/agent.feisblog.com.pp&quot;</span>
+<div class="highlight"><pre><span class="c1">#vim /etc/puppet/manifests/site.pp</span>
+<span class="n">import</span> <span class="s2">&quot;nodes/agent.feisblog.com.pp&quot;</span>
 </pre></div>
 
 
 <h2>8. 在agent端</h2>
-<p><code>#puppet agent --test --server master.feisblog.com --noop</code>
-<code>#puppet agent --test --server master.feisblog.com</code></p>
+<p><code>#puppet agent --test --server master.feisblog.com --noop</code>          </p>
+<p><code>#puppet agent --test --server master.feisblog.com</code></p>
                 </div><!-- /.entry-content -->
                 <div class="comments">
                 <h2>Comments !</h2>

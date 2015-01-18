@@ -107,17 +107,16 @@ agent.feisblog.com  192.168.212.110</p>
 <h2>1. 创建模块目录</h2>
 <p><code>#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}</code></p>
 <h2>2. 创建安装httpd类</h2>
-<div class="highlight"><pre><span class="c-Singleline">#httpd/manifests/install.pp </span>
-<span class="k">class</span> <span class="n">httpd::install</span> { 
-     <span class="k">package</span> { [ <span class="s">&quot;httpd&quot;</span> ]: 
-   <span class="n">ensure</span> =&gt; <span class="n">present</span>,
-   }
-}
+<div class="highlight"><pre><span class="c1">#vim /etc/puppet/modules/httpd/manifests/install.pp </span>
+<span class="k">class</span> <span class="n">httpd</span><span class="o">::</span><span class="n">install</span> <span class="p">{</span> 
+     <span class="n">package</span> <span class="p">{</span> <span class="o">[</span> <span class="s2">&quot;httpd&quot;</span> <span class="o">]</span><span class="p">:</span> 
+       <span class="k">ensure</span> <span class="o">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+   <span class="p">}</span>
+<span class="p">}</span>   
 </pre></div>
 
 
-<h2>3. 创建启动httpd服务类</h2>
-<div class="highlight"><pre>**httpd/manifests/service.pp ...</pre></div>
+<h2>3. 创建启动httpd服务类 ...</h2>
                         <a class="btn primary xsmall" href="http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/">more ...</a>
                 </div>
         </div>

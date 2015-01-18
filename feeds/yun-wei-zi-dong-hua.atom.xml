@@ -6,71 +6,71 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 &lt;h2&gt;1. 创建模块目录&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}&lt;/code&gt;&lt;/p&gt;
 &lt;h2&gt;2. 创建安装httpd类&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c-Singleline"&gt;#httpd/manifests/install.pp &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd::install&lt;/span&gt; { 
-     &lt;span class="k"&gt;package&lt;/span&gt; { [ &lt;span class="s"&gt;&amp;quot;httpd&amp;quot;&lt;/span&gt; ]: 
-   &lt;span class="n"&gt;ensure&lt;/span&gt; =&amp;gt; &lt;span class="n"&gt;present&lt;/span&gt;,
-   }
-}
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/install.pp &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+     &lt;span class="n"&gt;package&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+       &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;present&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+   &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;   
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;3. 创建启动httpd服务类&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;**httpd/manifests/service.pp**   
-class httpd::service {
-  service { &amp;quot;httpd&amp;quot;:
-    ensure =&amp;gt; running,
-    hasstatus =&amp;gt; true,
-    hasrestart =&amp;gt; true,
-    enable =&amp;gt; true,
-    require =&amp;gt; Class[&amp;quot;httpd::install&amp;quot;],
-  }
-}
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/service.pp  &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;running&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;hasstatus&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;hasrestart&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;enable&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Class&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;httpd::install&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;4. 创建httpd 配置文件类，配置文件通过puppet获取（目录：/etc/puppet/modules/httpd/files/httpd.conf）&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;**#httpd/manifests/conf.pp**
-class httpd::conf {
-  file { &amp;quot;httpd.conf&amp;quot;:
-    ensure =&amp;gt; present,
-    owner =&amp;gt; &amp;#39;root&amp;#39;,
-    group =&amp;gt; &amp;#39;root&amp;#39;,
-    mode =&amp;gt; &amp;#39;644&amp;#39;,
-    path =&amp;gt; &amp;#39;/etc/httpd/conf/httpd.conf&amp;#39;,
-    source =&amp;gt; &amp;#39;puppet:///modules/httpd/httpd.conf&amp;#39;,
-    require =&amp;gt; Class[&amp;quot;httpd::install&amp;quot;], 
-    notify =&amp;gt; Class[&amp;quot;httpd::service&amp;quot;], 
-  }
-}
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/conf.pp&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd.conf&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;present&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;owner&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;mode&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;644&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/etc/httpd/conf/httpd.conf&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;puppet:///modules/httpd/httpd.conf&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Class&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;httpd::install&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+    &lt;span class="n"&gt;notify&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Class&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;httpd::service&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;5. 创建主配置文件init.pp&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;**httpd/manifests/init.pp **
-class httpd { 
-    include httpd::install, httpd::service, httpd::conf
-}
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/init.pp&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+    &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; 
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;6. 配置客户端节点&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;#vim /etc/puppet/manifests/nodes/agent.feisblog.com.pp
-node &amp;#39;agent.feisblog.com&amp;#39; {
-    include httpd
-}
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/manifests/nodes/agent.feisblog.com.pp&lt;/span&gt;
+&lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;agent.feisblog.com&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+   &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; 
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;7. 将节点载入puppet的site.pp 文件&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt; &lt;span class="c"&gt;#vim /etc/puppet/manifests/site.pp&lt;/span&gt;
- &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;nodes/agent.feisblog.com.pp&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/manifests/site.pp&lt;/span&gt;
+&lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;nodes/agent.feisblog.com.pp&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;8. 在agent端&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com --noop&lt;/code&gt;
-&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</summary><category term="puppet"></category></entry><entry><title>Puppet(一) 安装</title><link href="http://www.feisblog.com/pages/2015/01/07/puppet_install/" rel="alternate"></link><updated>2015-01-07T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-01-07:pages/2015/01/07/puppet_install/</id><summary type="html">&lt;h3&gt;环境介绍：&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com --noop&lt;/code&gt;          &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</summary><category term="puppet"></category></entry><entry><title>Puppet(一) 安装</title><link href="http://www.feisblog.com/pages/2015/01/07/puppet_install/" rel="alternate"></link><updated>2015-01-07T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-01-07:pages/2015/01/07/puppet_install/</id><summary type="html">&lt;h3&gt;环境介绍：&lt;/h3&gt;
 &lt;p&gt;操作系统：Centos6.6&lt;br /&gt;
 master.
 feisblog.com    192.168.212.100 &lt;br /&gt;
