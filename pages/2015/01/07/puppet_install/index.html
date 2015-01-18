@@ -8,7 +8,7 @@
     <meta name="author" content="Kevin">
 
     <!-- Le styles -->
-    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="http://www.feisblog.com/theme/css/bootstrap.min.css" type="text/css" />
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -30,10 +30,10 @@
         font-size: 6pt;
      }
     </style>
-    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+    <link href="http://www.feisblog.com/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="http://www.feisblog.com/theme/css/font-awesome.css" rel="stylesheet">
 
-    <link href="/theme/css/pygments.css" rel="stylesheet">
+    <link href="http://www.feisblog.com/theme/css/pygments.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -41,12 +41,12 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/theme/images/favicon.ico">
-    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+    <link rel="shortcut icon" href="http://www.feisblog.com/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="http://www.feisblog.com/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.feisblog.com/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.feisblog.com/theme/images/apple-touch-icon-114x114.png">
 
-    <link href="/" type="application/atom+xml" rel="alternate" title="Feis Blog ATOM Feed" />
+    <link href="http://www.feisblog.com/" type="application/atom+xml" rel="alternate" title="Kevin's Blog ATOM Feed" />
 
   </head>
 
@@ -60,18 +60,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/index.html">Feis Blog </a>
+          <a class="brand" href="http://www.feisblog.com/index.html">Kevin's Blog  <strong>专注自动化运维、大数据、云计算</strong></a>
           <div class="nav-collapse">
             <ul class="nav">
                           <li class="divider-vertical"></li>
                   <li class="active">
-                    <a href="/category/yun-wei-zi-dong-hua.html">
+                    <a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html">
 						<i class="icon-folder-open icon-large"></i>运维自动化
 					</a>
                   </li>
 
                           <ul class="nav pull-right">
-                                <li><a href="/archives.html"><i class="icon-th-list"></i>归档</a></li>
+                                <li><a href="http://www.feisblog.com/archives.html"><i class="icon-th-list"></i>归档</a></li>
                           </ul>
 
             </ul>
@@ -103,13 +103,13 @@
         <i class="icon-calendar"></i>周三 07 一月 2015
 </abbr>
 <span class="label">By</span>
-<a href="/author/kevin.html"><i class="icon-user"></i>Kevin</a>
+<a href="http://www.feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
 <span class="label">Category</span>
-<a href="/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
+<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
 
 
 <span class="label">Tags</span>
-	<a href="/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
+	<a href="http://www.feisblog.com/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
 </footer><!-- /.post-info -->                </div>
                 <h3>环境介绍：</h3>
 <p>操作系统：Centos6.6<br />
@@ -123,7 +123,7 @@ agent.feisblog.com  192.168.212.110</p>
 3.安装服务器端<br />
 <code>#yum install puppet-server</code> <br />
 检查安装： <br />
-<code>#puppet -V</code>
+<code>#puppet -V</code> <br />
 <code>#facter -v</code> <br />
 4.在客户端 <br />
 <code>#yum install puppet</code>   </p>
@@ -144,7 +144,7 @@ agent.feisblog.com  192.168.212.110</p>
 首先是发起验证<br />
 <code># puppet agent --test --server server</code>  <br />
 服务器端完成验证    <br />
-<code>#puppet cert --list</code>
+<code>#puppet cert --list</code> <br />
 <code>#puppet cert sign agent.feisblog.com</code></p>
                 </div><!-- /.entry-content -->
                 <div class="comments">
@@ -172,19 +172,22 @@ agent.feisblog.com  192.168.212.110</p>
     <li><a href="http://python.org/"><i class="icon-external-link"></i>Python.org</a></li>
     <li><a href="http://jinja.pocoo.org/"><i class="icon-external-link"></i>Jinja2</a></li>
 <li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
-<li><a href="/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
-    <li><a href="http://weibo.com/2714510223"><i class="icon-微博-sign icon-large"></i>微博</a></li>
+<!--
+<li><a href="http://www.feisblog.com/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+-->
+
+    <li><a href="http://feisblog.com/feeds/all.atom.xml"><i class="icon-RSS-sign icon-large"></i>RSS</a></li>
 
 <li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>日志分类</h4></li>
 <li>
-<a href="/category/yun-wei-zi-dong-hua.html">
+<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html">
     <i class="icon-folder-open icon-large"></i>运维自动化
 </a>
 </li>
 
 <li class="nav-header"><h4><i class="icon-tags icon-large"></i>标签</h4></li>
-<li class="tag-4">
-    <a href="/tag/puppet.html">
+<li class="tag-1">
+    <a href="http://www.feisblog.com/tag/puppet.html">
         <i class="icon-tag icon-large"></i>puppet
     </a>
 </li>
@@ -221,7 +224,7 @@ agent.feisblog.com  192.168.212.110</p>
 
     <!-- Le javascript -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/theme/js/jquery-1.7.2.min.js"></script>
-    <script src="/theme/js/bootstrap.min.js"></script>
+    <script src="http://www.feisblog.com/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="http://www.feisblog.com/theme/js/bootstrap.min.js"></script>
   </body>
 </html>

@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Feis Blog - 运维自动化</title>
+    <title>Kevin's Blog - 运维自动化</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Kevin">
 
     <!-- Le styles -->
-    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="http://www.feisblog.com/theme/css/bootstrap.min.css" type="text/css" />
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -30,10 +30,10 @@
         font-size: 6pt;
      }
     </style>
-    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+    <link href="http://www.feisblog.com/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="http://www.feisblog.com/theme/css/font-awesome.css" rel="stylesheet">
 
-    <link href="/theme/css/pygments.css" rel="stylesheet">
+    <link href="http://www.feisblog.com/theme/css/pygments.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -41,12 +41,12 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/theme/images/favicon.ico">
-    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+    <link rel="shortcut icon" href="http://www.feisblog.com/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="http://www.feisblog.com/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.feisblog.com/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.feisblog.com/theme/images/apple-touch-icon-114x114.png">
 
-    <link href="/" type="application/atom+xml" rel="alternate" title="Feis Blog ATOM Feed" />
+    <link href="http://www.feisblog.com/" type="application/atom+xml" rel="alternate" title="Kevin's Blog ATOM Feed" />
 
   </head>
 
@@ -60,18 +60,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/index.html">Feis Blog </a>
+          <a class="brand" href="http://www.feisblog.com/index.html">Kevin's Blog  <strong>专注自动化运维、大数据、云计算</strong></a>
           <div class="nav-collapse">
             <ul class="nav">
                           <li class="divider-vertical"></li>
                   <li class="active">
-                    <a href="/category/yun-wei-zi-dong-hua.html">
+                    <a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html">
 						<i class="icon-folder-open icon-large"></i>运维自动化
 					</a>
                   </li>
 
                           <ul class="nav pull-right">
-                                <li><a href="/archives.html"><i class="icon-th-list"></i>归档</a></li>
+                                <li><a href="http://www.feisblog.com/archives.html"><i class="icon-th-list"></i>归档</a></li>
                           </ul>
 
             </ul>
@@ -85,20 +85,58 @@
       <div class="row">
         <div class="span9" id="content">
         <div class="article">
-                <h1><a href="/pages/2015/01/07/puppet_install/">Puppet(一) 安装</a></h1>
+                <h1><a href="http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/">Puppet(二)简单安装配置Apache</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2015-01-08T10:30:00+08:00">
+        <i class="icon-calendar"></i>周四 08 一月 2015
+</abbr>
+<span class="label">By</span>
+<a href="http://www.feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
+<span class="label">Category</span>
+<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
+
+
+<span class="label">Tags</span>
+	<a href="http://www.feisblog.com/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
+</footer><!-- /.post-info --></div>
+                <div class="summary"><h1>Puppet(二)简单安装配置Apache</h1>
+<p>操作系统：CentOS6.6<br />
+master.feisblog.com 192.168.212.100 <br />
+agent.feisblog.com  192.168.212.110</p>
+<h2>1. 创建模块目录</h2>
+<p><code>#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}</code></p>
+<h2>2. 创建安装httpd类</h2>
+<div class="highlight"><pre><span class="c-Singleline">#httpd/manifests/install.pp </span>
+<span class="k">class</span> <span class="n">httpd::install</span> { 
+     <span class="k">package</span> { [ <span class="s">&quot;httpd&quot;</span> ]: 
+   <span class="n">ensure</span> =&gt; <span class="n">present</span>,
+   }
+}
+</pre></div>
+
+
+<h2>3. 创建启动httpd服务类</h2>
+<div class="highlight"><pre>**httpd/manifests/service.pp ...</pre></div>
+                        <a class="btn primary xsmall" href="http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.feisblog.com/pages/2015/01/07/puppet_install/">Puppet(一) 安装</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2015-01-07T10:30:00+08:00">
         <i class="icon-calendar"></i>周三 07 一月 2015
 </abbr>
 <span class="label">By</span>
-<a href="/author/kevin.html"><i class="icon-user"></i>Kevin</a>
+<a href="http://www.feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
 <span class="label">Category</span>
-<a href="/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
+<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
 
 
 <span class="label">Tags</span>
-	<a href="/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
+	<a href="http://www.feisblog.com/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
 </footer><!-- /.post-info --></div>
                 <div class="summary"><h3>环境介绍：</h3>
 <p>操作系统：Centos6.6<br />
@@ -110,7 +148,7 @@ agent.feisblog.com  192.168.212.110</p>
 2.安装puppetLabs 源
 <code>#rpm -ivh http://yum.puppetlabs.com/el/6Server/products/x86_64/puppetlabs-release-6-11.noarch.rpm</code> <br />
 3 ...</p>
-                        <a class="btn primary xsmall" href="/pages/2015/01/07/puppet_install/">more ...</a>
+                        <a class="btn primary xsmall" href="http://www.feisblog.com/pages/2015/01/07/puppet_install/">more ...</a>
                 </div>
         </div>
         <hr />
@@ -124,19 +162,22 @@ agent.feisblog.com  192.168.212.110</p>
     <li><a href="http://python.org/"><i class="icon-external-link"></i>Python.org</a></li>
     <li><a href="http://jinja.pocoo.org/"><i class="icon-external-link"></i>Jinja2</a></li>
 <li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
-<li><a href="/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
-    <li><a href="http://weibo.com/2714510223"><i class="icon-微博-sign icon-large"></i>微博</a></li>
+<!--
+<li><a href="http://www.feisblog.com/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+-->
+
+    <li><a href="http://feisblog.com/feeds/all.atom.xml"><i class="icon-RSS-sign icon-large"></i>RSS</a></li>
 
 <li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>日志分类</h4></li>
 <li>
-<a href="/category/yun-wei-zi-dong-hua.html">
+<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html">
     <i class="icon-folder-open icon-large"></i>运维自动化
 </a>
 </li>
 
 <li class="nav-header"><h4><i class="icon-tags icon-large"></i>标签</h4></li>
-<li class="tag-4">
-    <a href="/tag/puppet.html">
+<li class="tag-1">
+    <a href="http://www.feisblog.com/tag/puppet.html">
         <i class="icon-tag icon-large"></i>puppet
     </a>
 </li>
@@ -173,7 +214,7 @@ agent.feisblog.com  192.168.212.110</p>
 
     <!-- Le javascript -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/theme/js/jquery-1.7.2.min.js"></script>
-    <script src="/theme/js/bootstrap.min.js"></script>
+    <script src="http://www.feisblog.com/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="http://www.feisblog.com/theme/js/bootstrap.min.js"></script>
   </body>
 </html>

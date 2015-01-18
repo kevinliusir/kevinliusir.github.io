@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Kevin's Blog</title>
+    <title>Puppet(二)简单安装配置Apache</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Kevin">
@@ -64,7 +64,7 @@
           <div class="nav-collapse">
             <ul class="nav">
                           <li class="divider-vertical"></li>
-                  <li >
+                  <li class="active">
                     <a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html">
 						<i class="icon-folder-open icon-large"></i>运维自动化
 					</a>
@@ -85,14 +85,120 @@
       <div class="row">
         <div class="span9" id="content">
 <section id="content">
-<h1>Archives for Kevin's Blog</h1>
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Puppet(二)简单安装配置Apache">
+                                        Puppet(二)简单安装配置Apache
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2015-01-08T10:30:00+08:00">
+        <i class="icon-calendar"></i>周四 08 一月 2015
+</abbr>
+<span class="label">By</span>
+<a href="http://www.feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
+<span class="label">Category</span>
+<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
 
-<dl>
-	<dt>周四 08 一月 2015</dt>
-	<dd><a href='pages/2015/01/08/puppet_install_Apache/'>Puppet(二)简单安装配置Apache</a></dd>
-	<dt>周三 07 一月 2015</dt>
-	<dd><a href='pages/2015/01/07/puppet_install/'>Puppet(一) 安装</a></dd>
-</dl>
+
+<span class="label">Tags</span>
+	<a href="http://www.feisblog.com/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
+</footer><!-- /.post-info -->                </div>
+                <h1>Puppet(二)简单安装配置Apache</h1>
+<p>操作系统：CentOS6.6<br />
+master.feisblog.com 192.168.212.100 <br />
+agent.feisblog.com  192.168.212.110</p>
+<h2>1. 创建模块目录</h2>
+<p><code>#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}</code></p>
+<h2>2. 创建安装httpd类</h2>
+<div class="highlight"><pre><span class="c-Singleline">#httpd/manifests/install.pp </span>
+<span class="k">class</span> <span class="n">httpd::install</span> { 
+     <span class="k">package</span> { [ <span class="s">&quot;httpd&quot;</span> ]: 
+   <span class="n">ensure</span> =&gt; <span class="n">present</span>,
+   }
+}
+</pre></div>
+
+
+<h2>3. 创建启动httpd服务类</h2>
+<div class="highlight"><pre>**httpd/manifests/service.pp**   
+class httpd::service {
+  service { &quot;httpd&quot;:
+    ensure =&gt; running,
+    hasstatus =&gt; true,
+    hasrestart =&gt; true,
+    enable =&gt; true,
+    require =&gt; Class[&quot;httpd::install&quot;],
+  }
+}
+</pre></div>
+
+
+<h2>4. 创建httpd 配置文件类，配置文件通过puppet获取（目录：/etc/puppet/modules/httpd/files/httpd.conf）</h2>
+<div class="highlight"><pre>**#httpd/manifests/conf.pp**
+class httpd::conf {
+  file { &quot;httpd.conf&quot;:
+    ensure =&gt; present,
+    owner =&gt; &#39;root&#39;,
+    group =&gt; &#39;root&#39;,
+    mode =&gt; &#39;644&#39;,
+    path =&gt; &#39;/etc/httpd/conf/httpd.conf&#39;,
+    source =&gt; &#39;puppet:///modules/httpd/httpd.conf&#39;,
+    require =&gt; Class[&quot;httpd::install&quot;], 
+    notify =&gt; Class[&quot;httpd::service&quot;], 
+  }
+}
+</pre></div>
+
+
+<h2>5. 创建主配置文件init.pp</h2>
+<div class="highlight"><pre>**httpd/manifests/init.pp **
+class httpd { 
+    include httpd::install, httpd::service, httpd::conf
+}
+</pre></div>
+
+
+<h2>6. 配置客户端节点</h2>
+<div class="highlight"><pre>#vim /etc/puppet/manifests/nodes/agent.feisblog.com.pp
+node &#39;agent.feisblog.com&#39; {
+    include httpd
+}
+</pre></div>
+
+
+<h2>7. 将节点载入puppet的site.pp 文件</h2>
+<div class="highlight"><pre> <span class="c">#vim /etc/puppet/manifests/site.pp</span>
+ <span class="kn">import</span> <span class="s">&quot;nodes/agent.feisblog.com.pp&quot;</span>
+</pre></div>
+
+
+<h2>8. 在agent端</h2>
+<p><code>#puppet agent --test --server master.feisblog.com --noop</code>
+<code>#puppet agent --test --server master.feisblog.com</code></p>
+                </div><!-- /.entry-content -->
+                <div class="comments">
+                <h2>Comments !</h2>
+                        <div id="disqus_thread"></div>
+                        <script type="text/javascript">
+                           var disqus_identifier = "pages/2015/01/08/puppet_install_Apache/";
+                           (function() {
+                                var dsq = document.createElement('script');
+                                dsq.type = 'text/javascript'; dsq.async = true;
+                                dsq.src = 'http://feisblog.disqus.com/embed.js';
+                                (document.getElementsByTagName('head')[0] ||
+                                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+                          })();
+                        </script>
+                </div>
+        </article>
 </section>
         </div><!--/span-->
 
