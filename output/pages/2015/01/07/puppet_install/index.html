@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Puppet(一) 安装</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Kevin">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="feisblog.com/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="feisblog.com/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="feisblog.com/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="feisblog.com/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="feisblog.com/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="feisblog.com/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="feisblog.com/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="feisblog.com/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="feisblog.com/" type="application/atom+xml" rel="alternate" title="Kevin's Blog ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="feisblog.com/index.html">Kevin's Blog  <strong>专注自动化运维、大数据、云计算</strong></a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                          <li class="divider-vertical"></li>
+                  <li >
+                    <a href="feisblog.com/category/docker.html">
+						<i class="icon-folder-open icon-large"></i>docker
+					</a>
+                  </li>
+                  <li >
+                    <a href="feisblog.com/category/xu-ni-hua.html">
+						<i class="icon-folder-open icon-large"></i>虚拟化
+					</a>
+                  </li>
+                  <li class="active">
+                    <a href="feisblog.com/category/yun-wei-zi-dong-hua.html">
+						<i class="icon-folder-open icon-large"></i>运维自动化
+					</a>
+                  </li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="feisblog.com/archives.html"><i class="icon-th-list"></i>归档</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Puppet(一) 安装">
+                                        Puppet(一) 安装
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2015-01-07T10:30:00+08:00">
+        <i class="icon-calendar"></i>周三 07 一月 2015
+</abbr>
+<span class="label">By</span>
+<a href="feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
+<span class="label">Category</span>
+<a href="feisblog.com/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
+
+
+<span class="label">Tags</span>
+	<a href="feisblog.com/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
+</footer><!-- /.post-info -->                </div>
+                <h1>Puppet(一) 安装</h1>
+<p>操作系统：Centos6.6<br />
+--------------------- | -------------
+master.feisblog.com   | 192.168.212.100
+agent.feisblog.com    | 192.168.212.110</p>
+<h2>1安装Centos EPEL 源</h2>
+<p><code>#rpm -ivh  http://mirrors.yun-idc.com/epel/6/x86_64/epel-release-6-8.noarch.rpm</code>   </p>
+<h2>2.安装puppetLabs 源 ##</h2>
+<p><code>#rpm -ivh http://yum.puppetlabs.com/el/6Server/products/x86_64/puppetlabs-release-6-11.noarch.rpm</code>   </p>
+<h2>3.安装服务器端</h2>
+<p><code>#yum install puppet-server</code> <br />
+检查安装： <br />
+<code>#puppet -V</code> <br />
+<code>#facter -v</code>   </p>
+<h2>4.在客户端   ##</h2>
+<p><code>#yum install puppet</code>   </p>
+<h2>5.配置</h2>
+<ul>
+<li>5.1 主机名和host 文件的修改   </li>
+<li>5.2 设置NTP时间同步 <br />
+    在crontab中加入：     <br />
+<code>*/10 * * * *  ntpdate -s time.nist.gov</code>  </li>
+<li>5.3 配置site.pp <br />
+<code>#vim /etc/puppet/manifests/site.pp</code>   </li>
+</ul>
+<div class="highlight"><pre><span class="n">node</span> <span class="n">default</span> <span class="p">{</span> 
+    <span class="n">file</span> <span class="p">{</span><span class="err">“</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">puppettest1</span><span class="o">.</span><span class="n">txt</span><span class="err">”</span><span class="p">:</span> 
+        <span class="n">content</span> <span class="o">=&gt;</span> <span class="err">“</span><span class="no">Hello</span> <span class="no">World</span><span class="err">”</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>6.启动服务</h2>
+<div class="highlight"><pre><span class="c1">#/etc/init.d/puppetmaster start</span>
+<span class="c1">#chkconfig puppetmaster on  </span>
+<span class="c1">#/etc/init.d/puppet start </span>
+<span class="c1">#chkconfig puppet on </span>
+</pre></div>
+
+
+<h2>7.客户端测试   ##</h2>
+<p>首先是发起验证<br />
+<code># puppet agent --test --server server</code>  <br />
+服务器端完成验证    <br />
+<code>#puppet cert --list</code> <br />
+<code>#puppet cert sign agent.feisblog.com</code></p>
+                </div><!-- /.entry-content -->
+                <div class="comments">
+                <h2>Comments !</h2>
+                        <div id="disqus_thread"></div>
+                        <script type="text/javascript">
+                           var disqus_identifier = "pages/2015/01/07/puppet_install/";
+                           (function() {
+                                var dsq = document.createElement('script');
+                                dsq.type = 'text/javascript'; dsq.async = true;
+                                dsq.src = 'http://feisblog.disqus.com/embed.js';
+                                (document.getElementsByTagName('head')[0] ||
+                                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+                          })();
+                        </script>
+                </div>
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+<li class="nav-header"><h4><i class="icon-external-link"></i>友情链接</h4></li>
+    <li><a href="http://getpelican.com/"><i class="icon-external-link"></i>Pelican</a></li>
+    <li><a href="http://python.org/"><i class="icon-external-link"></i>Python.org</a></li>
+    <li><a href="http://jinja.pocoo.org/"><i class="icon-external-link"></i>Jinja2</a></li>
+<li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
+<!--
+<li><a href="feisblog.com/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+-->
+
+    <li><a href="http://feisblog.com/feeds/all.atom.xml"><i class="icon-RSS-sign icon-large"></i>RSS</a></li>
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>日志分类</h4></li>
+<li>
+<a href="feisblog.com/category/docker.html">
+    <i class="icon-folder-open icon-large"></i>docker
+</a>
+</li>
+<li>
+<a href="feisblog.com/category/xu-ni-hua.html">
+    <i class="icon-folder-open icon-large"></i>虚拟化
+</a>
+</li>
+<li>
+<a href="feisblog.com/category/yun-wei-zi-dong-hua.html">
+    <i class="icon-folder-open icon-large"></i>运维自动化
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>标签</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'feisblog';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="feisblog.com/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="feisblog.com/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>
