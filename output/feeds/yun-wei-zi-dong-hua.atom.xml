@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog</title><link href="feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/yun-wei-zi-dong-hua.atom.xml" rel="self"></link><id>feisblog.com/</id><updated>2015-01-08T10:30:00+08:00</updated><entry><title>Puppet(二)简单安装配置Apache</title><link href="feisblog.com/pages/2015/01/08/puppet_install_Apache/" rel="alternate"></link><updated>2015-01-08T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:,2015-01-08:feisblog.com/pages/2015/01/08/puppet_install_Apache/</id><summary type="html">&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog</title><link href="http://www.feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/yun-wei-zi-dong-hua.atom.xml" rel="self"></link><id>http://www.feisblog.com/</id><updated>2015-01-08T10:30:00+08:00</updated><entry><title>Puppet(二)简单安装配置Apache</title><link href="http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/" rel="alternate"></link><updated>2015-01-08T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-01-08:pages/2015/01/08/puppet_install_Apache/</id><summary type="html">&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
 &lt;p&gt;操作系统：CentOS6.6&lt;br /&gt;
 master.feisblog.com 192.168.212.100 &lt;br /&gt;
 agent.feisblog.com  192.168.212.110&lt;/p&gt;
@@ -70,7 +70,7 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 
 &lt;h2&gt;8. 在agent端&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com --noop&lt;/code&gt;          &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</summary><category term="puppet"></category></entry><entry><title>Puppet(一) 安装</title><link href="feisblog.com/pages/2015/01/07/puppet_install/" rel="alternate"></link><updated>2015-01-07T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:,2015-01-07:feisblog.com/pages/2015/01/07/puppet_install/</id><summary type="html">&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</summary><category term="puppet"></category></entry><entry><title>Puppet(一) 安装</title><link href="http://www.feisblog.com/pages/2015/01/07/puppet_install/" rel="alternate"></link><updated>2015-01-07T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-01-07:pages/2015/01/07/puppet_install/</id><summary type="html">&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
 &lt;p&gt;操作系统：Centos6.6&lt;br /&gt;
 --------------------- | -------------
 master.feisblog.com   | 192.168.212.100

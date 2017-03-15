@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kevin's Blog</title><link>feisblog.com/</link><description>专注自动化运维、大数据、云计算</description><atom:link href="http://www.feisblog.com/feeds/kevin.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 15 Mar 2017 23:30:00 +0800</lastBuildDate><item><title>Docker Machine 创建Swarm 集群</title><link>feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</link><description>&lt;h1&gt;1swarm主节点&lt;/h1&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kevin's Blog</title><link>http://www.feisblog.com/</link><description>专注自动化运维、大数据、云计算</description><atom:link href="http://www.feisblog.com/feeds/kevin.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 15 Mar 2017 23:30:00 +0800</lastBuildDate><item><title>Docker Machine 创建Swarm 集群</title><link>http://www.feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</link><description>&lt;h1&gt;1swarm主节点&lt;/h1&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;#docker run swarm create
 a03ab86659df32ea3813d748f8a42f82
 &lt;/pre&gt;&lt;/div&gt;
@@ -25,11 +25,11 @@ swarm-node
 
 &lt;h1&gt;3. 测试和查看&lt;/h1&gt;
 &lt;p&gt;然后，我们就可以跨节点地运行我们所需的容器了。在这里，我们还要检查一下是否一切正常。所以，运行docker info命令来检查Swarm集群的信息。&lt;/p&gt;
-&lt;h1&gt;docker info&lt;/h1&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 15 Mar 2017 23:30:00 +0800</pubDate><guid>tag:,2017-03-15:feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</guid><category>docker</category></item><item><title>docker(一) 安装</title><link>feisblog.com/pages/2015/01/10/docker_install/</link><description>&lt;h1&gt;安装和使用docker&lt;/h1&gt;
+&lt;h1&gt;docker info&lt;/h1&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 15 Mar 2017 23:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2017-03-15:pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</guid><category>docker</category></item><item><title>docker(一) 安装</title><link>http://www.feisblog.com/pages/2015/01/10/docker_install/</link><description>&lt;h1&gt;安装和使用docker&lt;/h1&gt;
 &lt;p&gt;介绍：
 &lt;img alt="docker" src="/img/docker.png" /&gt;
 Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）。几乎没有性能开销,可以很容易地在机器和数据中心中运行。最重要的是,他们不依赖于任何语言、框架或包装系统。&lt;/p&gt;
-&lt;p&gt;不要忘本。 最重要是变成自己的知识，而&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Sat, 10 Jan 2015 10:30:00 +0800</pubDate><guid>tag:,2015-01-10:feisblog.com/pages/2015/01/10/docker_install/</guid><category>puppet</category></item><item><title>Puppet(二)简单安装配置Apache</title><link>feisblog.com/pages/2015/01/08/puppet_install_Apache/</link><description>&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
+&lt;p&gt;不要忘本。 最重要是变成自己的知识，而&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Sat, 10 Jan 2015 10:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2015-01-10:pages/2015/01/10/docker_install/</guid><category>puppet</category></item><item><title>Puppet(二)简单安装配置Apache</title><link>http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/</link><description>&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
 &lt;p&gt;操作系统：CentOS6.6&lt;br /&gt;
 master.feisblog.com 192.168.212.100 &lt;br /&gt;
 agent.feisblog.com  192.168.212.110&lt;/p&gt;
@@ -100,7 +100,7 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 
 &lt;h2&gt;8. 在agent端&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com --noop&lt;/code&gt;          &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Thu, 08 Jan 2015 10:30:00 +0800</pubDate><guid>tag:,2015-01-08:feisblog.com/pages/2015/01/08/puppet_install_Apache/</guid><category>puppet</category></item><item><title>Puppet(一) 安装</title><link>feisblog.com/pages/2015/01/07/puppet_install/</link><description>&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Thu, 08 Jan 2015 10:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2015-01-08:pages/2015/01/08/puppet_install_Apache/</guid><category>puppet</category></item><item><title>Puppet(一) 安装</title><link>http://www.feisblog.com/pages/2015/01/07/puppet_install/</link><description>&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
 &lt;p&gt;操作系统：Centos6.6&lt;br /&gt;
 --------------------- | -------------
 master.feisblog.com   | 192.168.212.100
@@ -146,4 +146,4 @@ agent.feisblog.com    | 192.168.212.110&lt;/p&gt;
 &lt;code&gt;# puppet agent --test --server server&lt;/code&gt;  &lt;br /&gt;
 服务器端完成验证    &lt;br /&gt;
 &lt;code&gt;#puppet cert --list&lt;/code&gt; &lt;br /&gt;
-&lt;code&gt;#puppet cert sign agent.feisblog.com&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 07 Jan 2015 10:30:00 +0800</pubDate><guid>tag:,2015-01-07:feisblog.com/pages/2015/01/07/puppet_install/</guid><category>puppet</category></item></channel></rss>
+&lt;code&gt;#puppet cert sign agent.feisblog.com&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 07 Jan 2015 10:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2015-01-07:pages/2015/01/07/puppet_install/</guid><category>puppet</category></item></channel></rss>
