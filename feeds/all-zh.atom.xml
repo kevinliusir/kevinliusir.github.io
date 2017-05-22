@@ -67,10 +67,9 @@ swarm-node
 
 &lt;h1&gt;3. 测试和查看&lt;/h1&gt;
 &lt;p&gt;然后，我们就可以跨节点地运行我们所需的容器了。在这里，我们还要检查一下是否一切正常。所以，运行docker info命令来检查Swarm集群的信息。&lt;/p&gt;
-&lt;h1&gt;docker info&lt;/h1&gt;</summary><category term="docker"></category></entry><entry><title>CloudStack的安装和使用</title><link href="http://www.feisblog.com/pages/2015/03/18/CloudStack_install/" rel="alternate"></link><updated>2015-03-18T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-03-18:pages/2015/03/18/CloudStack_install/</id><summary type="html">&lt;h1&gt;CloudStack的安装和使用&lt;/h1&gt;
-&lt;p&gt;=============================
-目录&lt;/p&gt;
+&lt;h1&gt;docker info&lt;/h1&gt;</summary><category term="docker"></category></entry><entry><title>CloudStack_install</title><link href="http://www.feisblog.com/pages/2015/03/18/CloudStack_install/" rel="alternate"></link><updated>2015-03-18T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-03-18:pages/2015/03/18/CloudStack_install/</id><summary type="html">&lt;h1&gt;CloudStack的安装和使用&lt;/h1&gt;
 &lt;hr /&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
 &lt;h3&gt;1.CloudStack简介&lt;/h3&gt;
 &lt;h3&gt;先决条件&lt;/h3&gt;
 &lt;p&gt;至少一个支持硬件虚拟化的计算机。如果是个人电脑，在主板bios里面开启下虚拟化。
