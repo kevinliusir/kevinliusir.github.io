@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog</title><link href="http://www.feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/kevin.atom.xml" rel="self"></link><id>http://www.feisblog.com/</id><updated>2017-05-22T09:53:25+08:00</updated><entry><title>Docker-EBK</title><link href="http://www.feisblog.com/pages/2017/05/22/Docker-EBK/" rel="alternate"></link><updated>2017-05-22T09:53:25+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2017-05-22:pages/2017/05/22/Docker-EBK/</id><summary type="html">&lt;h1&gt;Docker 安装EBK日志分析&lt;/h1&gt;
-&lt;p&gt;=============================
-目录&lt;/p&gt;
 &lt;hr /&gt;
 &lt;h3&gt;1. EBK介绍&lt;/h3&gt;
 &lt;ul&gt;
@@ -9,8 +7,8 @@
 &lt;li&gt;Logstash是一个完全开源的工具，他可以对你的日志进行收集、过滤，并将其存储供以后使用（如，搜索）。&lt;/li&gt;
 &lt;li&gt;本文档使用Filebeat 代替Logstash &lt;/li&gt;
 &lt;li&gt;Kibana 也是一个开源和免费的工具，它Kibana可以为 Logstash 和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助您汇总、分析和搜索重要数据日志。&lt;/li&gt;
+&lt;li&gt;Filebeat：ELK 协议栈的新成员，一个轻量级开源日志文件数据搜集器，基于 Logstash-Forwarder 源代码开发，是对它的替代。在需要采集日志数据的 server 上安装 Filebeat，并指定日志目录或日志文件后，Filebeat 就能读取数据，迅速发送到 Logstash 进行解析，亦或直接发送到 Elasticsearch 进行集中式存储和分析。  &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;- Filebeat：ELK 协议栈的新成员，一个轻量级开源日志文件数据搜集器，基于 Logstash-Forwarder 源代码开发，是对它的替代。在需要采集日志数据的 server 上安装 Filebeat，并指定日志目录或日志文件后，Filebeat 就能读取数据，迅速发送到 Logstash 进行解析，亦或直接发送到 Elasticsearch 进行集中式存储和分析。&lt;/h2&gt;
 &lt;h3&gt;基于 Filebeat 的 ELK 集群架构&lt;/h3&gt;
 &lt;p&gt;&lt;img alt="" src="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/image005.png" /&gt;&lt;/p&gt;
 &lt;h3&gt;安装Elasticsearch&lt;/h3&gt;
