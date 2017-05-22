@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Kevin's Blog - docker</title>
+    <title>Kevin's Blog - CloudStack</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Kevin">
@@ -64,7 +64,7 @@
           <div class="nav-collapse">
             <ul class="nav">
                           <li class="divider-vertical"></li>
-                  <li class="active">
+                  <li >
                     <a href="http://www.feisblog.com/category/docker.html">
 						<i class="icon-folder-open icon-large"></i>docker
 					</a>
@@ -100,49 +100,34 @@
       <div class="row">
         <div class="span9" id="content">
         <div class="article">
-                <h1><a href="http://www.feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/">Docker Machine 创建Swarm 集群</a></h1>
+                <h1><a href="http://www.feisblog.com/pages/2015/03/18/CloudStack_install/">CloudStack的安装和使用</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
-<abbr class="published" title="2017-03-15T23:30:00+08:00">
-        <i class="icon-calendar"></i>周三 15 三月 2017
+<abbr class="published" title="2015-03-18T10:30:00+08:00">
+        <i class="icon-calendar"></i>周三 18 三月 2015
 </abbr>
 <span class="label">By</span>
 <a href="http://www.feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
 <span class="label">Category</span>
-<a href="http://www.feisblog.com/category/docker.html"><i class="icon-folder-open"></i>docker</a>.
+<a href="http://www.feisblog.com/category/yun-ji-suan.html"><i class="icon-folder-open"></i>云计算</a>.
 
 
 <span class="label">Tags</span>
-	<a href="http://www.feisblog.com/tag/docker.html"><i class="icon-tag"></i>docker</a>
+	<a href="http://www.feisblog.com/tag/cloudstack.html"><i class="icon-tag"></i>CloudStack</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h1>1swarm主节点</h1>
-<div class="highlight"><pre>#docker run swarm create
-a03ab86659df32ea3813d748f8a42f82
-</pre></div>
-
-
-<div class="highlight"><pre>docker-machine create \
--d virtualbox \
---swarm \
---swarm-master \
---swarm-discovery token://a03ab86659df32ea3813d748f8a42f82 \
-swarm-master
-</pre></div>
-
-
-<h1>2创建Swarm从节点</h1>
-<div class="highlight"><pre>docker-machine create \
--d virtualbox \
---swarm \
---swarm-discovery token://&lt;TOKEN-FROM-ABOVE&gt; \
-swarm-node
-</pre></div>
-
-
-<h1>3. 测试和查看</h1>
-<p>然后，我们就可以跨节点地运行我们所需的容器了。在这里，我们还要检查一下是否一切正常。所以，运行docker info命令来检查Swarm集群的信息。</p>
-<h1>docker info</h1>
-                        <a class="btn primary xsmall" href="http://www.feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/">more ...</a>
+                <div class="summary"><h1>CloudStack的安装和使用</h1>
+<p>=============================
+目录</p>
+<hr />
+<h3>1.CloudStack简介</h3>
+<h3>先决条件</h3>
+<p>至少一个支持硬件虚拟化的计算机。如果是个人电脑，在主板bios里面开启下虚拟化。
+CentOS 6.4 x86_64 的 minimal install CD <a href="http://mirrors.kernel.org/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso">http://mirrors.kernel.org/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso</a>
+一个以xxx.xxx.xxx.1/24作为网关的C类地址并且该网络中不能存在DHCP服务器；运行Cloudstack 的机器不能使用动态地址。这样做只是为了简单起见，我的环境中是192.168.1.0/24网络。</p>
+<h3>安装和规划cloudstack</h3>
+<p>1.安装CentOS 6.7 x86_64 最小化安装
+2.安装网络 ...</p>
+                        <a class="btn primary xsmall" href="http://www.feisblog.com/pages/2015/03/18/CloudStack_install/">more ...</a>
                 </div>
         </div>
         <hr />
