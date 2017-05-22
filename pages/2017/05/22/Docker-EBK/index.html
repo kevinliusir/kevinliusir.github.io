@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Kevin's Blog - 运维自动化</title>
+    <title>Docker-EBK</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Kevin">
@@ -94,9 +94,20 @@
     <div class="container-fluid">
       <div class="row">
         <div class="span9" id="content">
-        <div class="article">
-                <h1><a href="http://www.feisblog.com/pages/2017/05/22/Docker-EBK/">Docker-EBK</a></h1>
-                <div class="well small"><footer class="post-info">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Docker-EBK">
+                                        Docker-EBK
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-05-22T09:53:25+08:00">
         <i class="icon-calendar"></i>周一 22 五月 2017
@@ -109,8 +120,8 @@
 
 <span class="label">Tags</span>
 	<a href="http://www.feisblog.com/tag/elk.html"><i class="icon-tag"></i>ELK</a>
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h1>Docker 安装EBK日志分析</h1>
+</footer><!-- /.post-info -->                </div>
+                <h1>Docker 安装EBK日志分析</h1>
 <p>=============================
 目录</p>
 <hr />
@@ -121,78 +132,57 @@
 <li>本文档使用Filebeat 代替Logstash </li>
 <li>Kibana 也是一个开源和免费的工具，它Kibana可以为 Logstash 和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助您汇总、分析和搜索重要数据日志。</li>
 </ul>
-<h2>- Filebeat：ELK 协议栈的新成员，一个轻量级开源日志文件数据搜集器，基于 Logstash-Forwarder 源代码开发，是对它的替代。在需要采集日志数据的 server 上安装 Filebeat，并指定日志目录或日志文件后，Filebeat 就能读取数据，迅速发送到 ...</h2>
-                        <a class="btn primary xsmall" href="http://www.feisblog.com/pages/2017/05/22/Docker-EBK/">more ...</a>
-                </div>
-        </div>
-        <hr />
-        <div class="article">
-                <h1><a href="http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/">Puppet(二)简单安装配置Apache</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2015-01-08T10:30:00+08:00">
-        <i class="icon-calendar"></i>周四 08 一月 2015
-</abbr>
-<span class="label">By</span>
-<a href="http://www.feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
-<span class="label">Category</span>
-<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
-
-
-<span class="label">Tags</span>
-	<a href="http://www.feisblog.com/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h1>Puppet(二)简单安装配置Apache</h1>
-<p>操作系统：CentOS6.6<br />
-master.feisblog.com 192.168.212.100 <br />
-agent.feisblog.com  192.168.212.110</p>
-<h2>1. 创建模块目录</h2>
-<p><code>#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}</code></p>
-<h2>2. 创建安装httpd类</h2>
-<div class="highlight"><pre><span class="c1">#vim /etc/puppet/modules/httpd/manifests/install.pp </span>
-<span class="k">class</span> <span class="n">httpd</span><span class="o">::</span><span class="n">install</span> <span class="p">{</span> 
-     <span class="n">package</span> <span class="p">{</span> <span class="o">[</span> <span class="s2">&quot;httpd&quot;</span> <span class="o">]</span><span class="p">:</span> 
-       <span class="k">ensure</span> <span class="o">=&gt;</span> <span class="n">present</span><span class="p">,</span>
-   <span class="p">}</span>
-<span class="p">}</span>   
+<h2>- Filebeat：ELK 协议栈的新成员，一个轻量级开源日志文件数据搜集器，基于 Logstash-Forwarder 源代码开发，是对它的替代。在需要采集日志数据的 server 上安装 Filebeat，并指定日志目录或日志文件后，Filebeat 就能读取数据，迅速发送到 Logstash 进行解析，亦或直接发送到 Elasticsearch 进行集中式存储和分析。</h2>
+<h3>基于 Filebeat 的 ELK 集群架构</h3>
+<p><img alt="" src="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/image005.png" /></p>
+<h3>安装Elasticsearch</h3>
+<div class="highlight"><pre><span class="vg">$sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="nb">name</span> <span class="n">myes</span>  <span class="o">-</span><span class="n">v</span> <span class="sr">/etc/</span><span class="ss">localtime</span><span class="p">:</span><span class="sr">/etc/</span><span class="n">localtime</span>  <span class="o">-</span><span class="nb">p</span> <span class="mi">9200</span><span class="p">:</span><span class="mi">9200</span>  <span class="o">-</span><span class="nb">p</span> <span class="mi">9300</span><span class="p">:</span><span class="mi">9300</span>  <span class="n">elasticsearch</span> 
 </pre></div>
 
 
-<h2>3. 创建启动httpd服务类 ...</h2>
-                        <a class="btn primary xsmall" href="http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/">more ...</a>
+<h3>安装kibana</h3>
+<div class="highlight"><pre><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span>  <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="nb">name</span> <span class="n">mykibana</span> <span class="o">-</span><span class="n">v</span> <span class="sr">/etc/</span><span class="ss">localtime</span><span class="p">:</span><span class="sr">/etc/</span><span class="n">localtime</span> <span class="o">-</span><span class="n">e</span> <span class="no">ELASTICSEARCH_URL</span><span class="o">=</span><span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="mi">192</span><span class="o">.</span><span class="mi">168</span><span class="o">.</span><span class="mi">59</span><span class="o">.</span><span class="mi">201</span><span class="p">:</span><span class="mi">9200</span> <span class="o">-</span><span class="nb">p</span> <span class="mi">5601</span><span class="p">:</span><span class="mi">5601</span>  <span class="n">kibana</span>
+</pre></div>
+
+
+<h3>安装Filebeat</h3>
+<div class="highlight"><pre><span class="n">wget</span>  <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">artifacts</span><span class="o">.</span><span class="n">elastic</span><span class="o">.</span><span class="n">co</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">beats</span><span class="o">/</span><span class="n">filebeat</span><span class="o">/</span><span class="n">filebeat</span><span class="o">-</span><span class="mi">5</span><span class="o">.</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">x86_64</span><span class="o">.</span><span class="n">rpm</span>  
+
+<span class="n">rpm</span> <span class="o">-</span><span class="n">ivh</span> <span class="n">filebeat</span><span class="o">-</span><span class="mi">5</span><span class="o">.</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">x86_64</span><span class="o">.</span><span class="n">rpm</span>   
+
+<span class="n">vim</span> <span class="sr">/etc/</span><span class="n">filebeat</span><span class="o">/</span><span class="n">filebeat</span><span class="o">.</span><span class="n">yml</span>   
+</pre></div>
+
+
+<div class="highlight"><pre>filebeat.prospectors:
+- input_type: log
+  paths:
+- /var/log/*.log
+output.elasticsearch:
+  hosts: [&quot;localhost:9200&quot;]
+</pre></div>
+
+
+<p>启动filebeat</p>
+<p>/etc/init.d/filebeat start </p>
+<h3>访问kibana  即可看到日志</h3>
+                </div><!-- /.entry-content -->
+                <div class="comments">
+                <h2>Comments !</h2>
+                        <div id="disqus_thread"></div>
+                        <script type="text/javascript">
+                           var disqus_identifier = "pages/2017/05/22/Docker-EBK/";
+                           (function() {
+                                var dsq = document.createElement('script');
+                                dsq.type = 'text/javascript'; dsq.async = true;
+                                dsq.src = 'http://feisblog.disqus.com/embed.js';
+                                (document.getElementsByTagName('head')[0] ||
+                                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+                          })();
+                        </script>
                 </div>
-        </div>
-        <hr />
-        <div class="article">
-                <h1><a href="http://www.feisblog.com/pages/2015/01/07/puppet_install/">Puppet(一) 安装</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2015-01-07T10:30:00+08:00">
-        <i class="icon-calendar"></i>周三 07 一月 2015
-</abbr>
-<span class="label">By</span>
-<a href="http://www.feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
-<span class="label">Category</span>
-<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
-
-
-<span class="label">Tags</span>
-	<a href="http://www.feisblog.com/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h1>Puppet(一) 安装</h1>
-<p>操作系统：Centos6.6<br />
---------------------- | -------------
-master.feisblog.com   | 192.168.212.100
-agent.feisblog.com    | 192.168.212.110</p>
-<h2>1安装Centos EPEL 源</h2>
-<p><code>#rpm -ivh  http://mirrors.yun-idc.com/epel/6/x86_64/epel-release-6-8.noarch.rpm</code>   </p>
-<h2>2.安装puppetLabs 源 ##</h2>
-<p><code>#rpm -ivh http://yum.puppetlabs.com/el/6Server/products/x86_64/puppetlabs-release-6-11.noarch ...</code></p>
-                        <a class="btn primary xsmall" href="http://www.feisblog.com/pages/2015/01/07/puppet_install/">more ...</a>
-                </div>
-        </div>
-        <hr />
-
+        </article>
+</section>
         </div><!--/span-->
 
                 <div class="span3 well sidebar-nav" id="sidebar">
