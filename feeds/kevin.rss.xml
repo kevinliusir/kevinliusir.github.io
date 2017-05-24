@@ -69,22 +69,21 @@ swarm-node
 &lt;p&gt;然后，我们就可以跨节点地运行我们所需的容器了。在这里，我们还要检查一下是否一切正常。所以，运行docker info命令来检查Swarm集群的信息。&lt;/p&gt;
 &lt;h1&gt;docker info&lt;/h1&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 15 Mar 2017 23:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2017-03-15:pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</guid><category>docker</category></item><item><title>disconf</title><link>http://www.feisblog.com/pages/2015/04/08/disconf/</link><description>&lt;h1&gt;Disconf&lt;/h1&gt;
 &lt;h1&gt;为什么要用分布式配置管理中心&lt;/h1&gt;
-&lt;p&gt;最近发生了一件事情，程序中的机密配置文件被开发人员发布到github上，
-为了避免这个事情发生，采用分布式配置管理中心来管理配置文件，并且为了避免不同环境配置的管理 &lt;/p&gt;
+&lt;p&gt;最近发生了一件事情，程序中的机密配置文件被开发人员发布到github上，为了避免这个事情发生，采用分布式配置管理中心来管理配置文件，并且为了避免不同环境配置的管理出错。   &lt;/p&gt;
 &lt;p&gt;disconf （Distributed Configuration Management Platform）是一个分布式配置管理平台，能够使程序能够随处运行，脱离不同环境修改不同配置文件。
 专注于各种 分布式系统配置管理 的通用组件/通用平台, 提供统一的配置管理服务。&lt;/p&gt;
 &lt;h1&gt;安装&lt;/h1&gt;
 &lt;h2&gt;安装依赖软件&lt;/h2&gt;
-&lt;p&gt;安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）
-安装Tomcat（apache-tomcat-7.0.50）
-安装Nginx（nginx/1.5.3）
-安装 zookeeeper （zookeeper-3.3.0）
-安装 Redis （2.4.5）
-准备配置
-将你的配置文件放到此地址目录下（以下地址可自行设定）：&lt;/p&gt;
-&lt;p&gt;/home/work/dsp/disconf-rd/online-resources
-如果不确定如何配置，&lt;strong&gt;可以拷贝/disconf-web/profile/rd/&lt;/strong&gt;目录下的文件，拷贝过去后修改即可。&lt;/p&gt;
-&lt;p&gt;配置文件包括：&lt;/p&gt;
+&lt;p&gt;安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）&lt;br /&gt;
+安装Tomcat（apache-tomcat-7.0.50） 
+安装Nginx（nginx/1.5.3）&lt;br /&gt;
+安装 zookeeeper （zookeeper-3.3.0）&lt;br /&gt;
+安装 Redis （2.4.5）&lt;br /&gt;
+准备配置  &lt;br /&gt;
+将你的配置文件放到此地址目录下（以下地址可自行设定）：  &lt;/p&gt;
+&lt;p&gt;/home/work/dsp/disconf-rd/online-resources&lt;br /&gt;
+如果不确定如何配置，&lt;strong&gt;可以拷贝/disconf-web/profile/rd/&lt;/strong&gt;目录下的文件，拷贝过去后修改即可。  &lt;/p&gt;
+&lt;p&gt;配置文件包括：  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;jdbc-mysql.properties (数据库配置)&lt;/li&gt;
 &lt;li&gt;redis-config.properties (Redis配置，主要用于web登录使用)&lt;/li&gt;
@@ -94,20 +93,25 @@ swarm-node
 &lt;/ul&gt;
 &lt;p&gt;cp application-demo.properties application.properties
 &lt;em&gt;注意，即使只有一个redis，也应该配置两个redis client，否则将造成内部错误。&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;设置War包将要被部署的地址（以下地址可自行设定）：&lt;/p&gt;
-&lt;p&gt;/home/work/dsp/disconf-rd/war&lt;/p&gt;
+&lt;p&gt;设置War包将要被部署的地址（以下地址可自行设定）：  &lt;/p&gt;
+&lt;p&gt;/home/work/dsp/disconf-rd/war  &lt;/p&gt;
 &lt;h2&gt;构建&lt;/h2&gt;
-&lt;p&gt;ONLINE_CONFIG_PATH=/home/work/dsp/disconf-rd/online-resources
-WAR_ROOT_PATH=/home/work/dsp/disconf-rd/war
-export ONLINE_CONFIG_PATH
-export WAR_ROOT_PATH
-cd disconf-web
-sh deploy/deploy.sh
-这样会在 /home/work/dsp/disconf-rd/war 生成以下结果：&lt;/p&gt;
-&lt;p&gt;-disconf-web.war
--html
--META-INF
--WEB-INF&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="no"&gt;ONLINE_CONFIG_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;online&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;resources&lt;/span&gt;
+&lt;span class="no"&gt;WAR_ROOT_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;war&lt;/span&gt;
+&lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="no"&gt;ONLINE_CONFIG_PATH&lt;/span&gt;
+&lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="no"&gt;WAR_ROOT_PATH&lt;/span&gt;
+&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;web&lt;/span&gt;
+&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样会在 /home/work/dsp/disconf-rd/war 生成以下结果：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;-disconf-web.war&lt;/li&gt;
+&lt;li&gt;-html&lt;/li&gt;
+&lt;li&gt;-META-INF&lt;/li&gt;
+&lt;li&gt;-WEB-INF&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2&gt;上线前的初始化工作&lt;/h2&gt;
 &lt;p&gt;初始化数据库：&lt;/p&gt;
 &lt;p&gt;可以参考 sql/readme.md 来进行数据库的初始化。注意顺序执行

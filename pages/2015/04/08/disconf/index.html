@@ -133,22 +133,21 @@
 </footer><!-- /.post-info -->                </div>
                 <h1>Disconf</h1>
 <h1>为什么要用分布式配置管理中心</h1>
-<p>最近发生了一件事情，程序中的机密配置文件被开发人员发布到github上，
-为了避免这个事情发生，采用分布式配置管理中心来管理配置文件，并且为了避免不同环境配置的管理 </p>
+<p>最近发生了一件事情，程序中的机密配置文件被开发人员发布到github上，为了避免这个事情发生，采用分布式配置管理中心来管理配置文件，并且为了避免不同环境配置的管理出错。   </p>
 <p>disconf （Distributed Configuration Management Platform）是一个分布式配置管理平台，能够使程序能够随处运行，脱离不同环境修改不同配置文件。
 专注于各种 分布式系统配置管理 的通用组件/通用平台, 提供统一的配置管理服务。</p>
 <h1>安装</h1>
 <h2>安装依赖软件</h2>
-<p>安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）
-安装Tomcat（apache-tomcat-7.0.50）
-安装Nginx（nginx/1.5.3）
-安装 zookeeeper （zookeeper-3.3.0）
-安装 Redis （2.4.5）
-准备配置
-将你的配置文件放到此地址目录下（以下地址可自行设定）：</p>
-<p>/home/work/dsp/disconf-rd/online-resources
-如果不确定如何配置，<strong>可以拷贝/disconf-web/profile/rd/</strong>目录下的文件，拷贝过去后修改即可。</p>
-<p>配置文件包括：</p>
+<p>安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）<br />
+安装Tomcat（apache-tomcat-7.0.50） 
+安装Nginx（nginx/1.5.3）<br />
+安装 zookeeeper （zookeeper-3.3.0）<br />
+安装 Redis （2.4.5）<br />
+准备配置  <br />
+将你的配置文件放到此地址目录下（以下地址可自行设定）：  </p>
+<p>/home/work/dsp/disconf-rd/online-resources<br />
+如果不确定如何配置，<strong>可以拷贝/disconf-web/profile/rd/</strong>目录下的文件，拷贝过去后修改即可。  </p>
+<p>配置文件包括：  </p>
 <ul>
 <li>jdbc-mysql.properties (数据库配置)</li>
 <li>redis-config.properties (Redis配置，主要用于web登录使用)</li>
@@ -158,20 +157,25 @@
 </ul>
 <p>cp application-demo.properties application.properties
 <em>注意，即使只有一个redis，也应该配置两个redis client，否则将造成内部错误。</em></p>
-<p>设置War包将要被部署的地址（以下地址可自行设定）：</p>
-<p>/home/work/dsp/disconf-rd/war</p>
+<p>设置War包将要被部署的地址（以下地址可自行设定）：  </p>
+<p>/home/work/dsp/disconf-rd/war  </p>
 <h2>构建</h2>
-<p>ONLINE_CONFIG_PATH=/home/work/dsp/disconf-rd/online-resources
-WAR_ROOT_PATH=/home/work/dsp/disconf-rd/war
-export ONLINE_CONFIG_PATH
-export WAR_ROOT_PATH
-cd disconf-web
-sh deploy/deploy.sh
-这样会在 /home/work/dsp/disconf-rd/war 生成以下结果：</p>
-<p>-disconf-web.war
--html
--META-INF
--WEB-INF</p>
+<div class="highlight"><pre><span class="no">ONLINE_CONFIG_PATH</span><span class="o">=</span><span class="sr">/home/</span><span class="n">work</span><span class="o">/</span><span class="n">dsp</span><span class="o">/</span><span class="n">disconf</span><span class="o">-</span><span class="n">rd</span><span class="o">/</span><span class="n">online</span><span class="o">-</span><span class="n">resources</span>
+<span class="no">WAR_ROOT_PATH</span><span class="o">=</span><span class="sr">/home/</span><span class="n">work</span><span class="o">/</span><span class="n">dsp</span><span class="o">/</span><span class="n">disconf</span><span class="o">-</span><span class="n">rd</span><span class="o">/</span><span class="n">war</span>
+<span class="n">export</span> <span class="no">ONLINE_CONFIG_PATH</span>
+<span class="n">export</span> <span class="no">WAR_ROOT_PATH</span>
+<span class="n">cd</span> <span class="n">disconf</span><span class="o">-</span><span class="n">web</span>
+<span class="n">sh</span> <span class="n">deploy</span><span class="o">/</span><span class="n">deploy</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+
+
+<p>这样会在 /home/work/dsp/disconf-rd/war 生成以下结果：  </p>
+<ul>
+<li>-disconf-web.war</li>
+<li>-html</li>
+<li>-META-INF</li>
+<li>-WEB-INF</li>
+</ul>
 <h2>上线前的初始化工作</h2>
 <p>初始化数据库：</p>
 <p>可以参考 sql/readme.md 来进行数据库的初始化。注意顺序执行
