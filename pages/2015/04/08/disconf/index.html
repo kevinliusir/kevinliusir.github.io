@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Puppet(一) 安装</title>
+    <title>disconf</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Kevin">
@@ -69,7 +69,7 @@
 						<i class="icon-folder-open icon-large"></i>docker
 					</a>
                   </li>
-                  <li >
+                  <li class="active">
                     <a href="http://www.feisblog.com/category/wei-fu-wu.html">
 						<i class="icon-folder-open icon-large"></i>微服务
 					</a>
@@ -84,7 +84,7 @@
 						<i class="icon-folder-open icon-large"></i>云计算
 					</a>
                   </li>
-                  <li class="active">
+                  <li >
                     <a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html">
 						<i class="icon-folder-open icon-large"></i>运维自动化
 					</a>
@@ -110,8 +110,8 @@
                         <h1>
                                 <a href=""
                                         rel="bookmark"
-                                        title="Permalink to Puppet(一) 安装">
-                                        Puppet(一) 安装
+                                        title="Permalink to disconf">
+                                        disconf
                                 </a>
                         </h1>
                 </header>
@@ -119,71 +119,128 @@
                 <div class="well">
 <footer class="post-info">
 <span class="label">Date</span>
-<abbr class="published" title="2015-01-07T10:30:00+08:00">
-        <i class="icon-calendar"></i>周三 07 一月 2015
+<abbr class="published" title="2015-04-08T10:30:00+08:00">
+        <i class="icon-calendar"></i>周三 08 四月 2015
 </abbr>
 <span class="label">By</span>
 <a href="http://www.feisblog.com/author/kevin.html"><i class="icon-user"></i>Kevin</a>
 <span class="label">Category</span>
-<a href="http://www.feisblog.com/category/yun-wei-zi-dong-hua.html"><i class="icon-folder-open"></i>运维自动化</a>.
+<a href="http://www.feisblog.com/category/wei-fu-wu.html"><i class="icon-folder-open"></i>微服务</a>.
 
 
 <span class="label">Tags</span>
-	<a href="http://www.feisblog.com/tag/puppet.html"><i class="icon-tag"></i>puppet</a>
+	<a href="http://www.feisblog.com/tag/disconf.html"><i class="icon-tag"></i>disconf</a>
 </footer><!-- /.post-info -->                </div>
-                <h1>Puppet(一) 安装</h1>
-<p>操作系统：Centos6.6<br />
---------------------- | -------------
-master.feisblog.com   | 192.168.212.100
-agent.feisblog.com    | 192.168.212.110</p>
-<h2>1安装Centos EPEL 源</h2>
-<p><code>#rpm -ivh  http://mirrors.yun-idc.com/epel/6/x86_64/epel-release-6-8.noarch.rpm</code>   </p>
-<h2>2.安装puppetLabs 源 ##</h2>
-<p><code>#rpm -ivh http://yum.puppetlabs.com/el/6Server/products/x86_64/puppetlabs-release-6-11.noarch.rpm</code>   </p>
-<h2>3.安装服务器端</h2>
-<p><code>#yum install puppet-server</code> <br />
-检查安装： <br />
-<code>#puppet -V</code> <br />
-<code>#facter -v</code>   </p>
-<h2>4.在客户端   ##</h2>
-<p><code>#yum install puppet</code>   </p>
-<h2>5.配置</h2>
+                <h1>Disconf</h1>
+<h1>为什么要用分布式配置管理中心</h1>
+<p>最近发生了一件事情，程序中的机密配置文件被开发人员发布到github上，
+为了避免这个事情发生，采用分布式配置管理中心来管理配置文件，并且为了避免不同环境配置的管理 </p>
+<p>disconf （Distributed Configuration Management Platform）是一个分布式配置管理平台，能够使程序能够随处运行，脱离不同环境修改不同配置文件。
+专注于各种 分布式系统配置管理 的通用组件/通用平台, 提供统一的配置管理服务。</p>
+<h1>安装</h1>
+<h2>安装依赖软件</h2>
+<p>安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）
+安装Tomcat（apache-tomcat-7.0.50）
+安装Nginx（nginx/1.5.3）
+安装 zookeeeper （zookeeper-3.3.0）
+安装 Redis （2.4.5）
+准备配置
+将你的配置文件放到此地址目录下（以下地址可自行设定）：</p>
+<p>/home/work/dsp/disconf-rd/online-resources
+如果不确定如何配置，<strong>可以拷贝/disconf-web/profile/rd/</strong>目录下的文件，拷贝过去后修改即可。</p>
+<p>配置文件包括：</p>
 <ul>
-<li>5.1 主机名和host 文件的修改   </li>
-<li>5.2 设置NTP时间同步 <br />
-    在crontab中加入：     <br />
-<code>*/10 * * * *  ntpdate -s time.nist.gov</code>  </li>
-<li>5.3 配置site.pp <br />
-<code>#vim /etc/puppet/manifests/site.pp</code>   </li>
+<li>jdbc-mysql.properties (数据库配置)</li>
+<li>redis-config.properties (Redis配置，主要用于web登录使用)</li>
+<li>zoo.properties (Zookeeper配置)</li>
+<li>application.properties (应用配置）
+注意，记得执行将application-demo.properties复制成application.properties：</li>
 </ul>
-<div class="highlight"><pre><span class="n">node</span> <span class="n">default</span> <span class="p">{</span> 
-    <span class="n">file</span> <span class="p">{</span><span class="err">“</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">puppettest1</span><span class="o">.</span><span class="n">txt</span><span class="err">”</span><span class="p">:</span> 
-        <span class="n">content</span> <span class="o">=&gt;</span> <span class="err">“</span><span class="no">Hello</span> <span class="no">World</span><span class="err">”</span><span class="p">;</span>
+<p>cp application-demo.properties application.properties
+<em>注意，即使只有一个redis，也应该配置两个redis client，否则将造成内部错误。</em></p>
+<p>设置War包将要被部署的地址（以下地址可自行设定）：</p>
+<p>/home/work/dsp/disconf-rd/war</p>
+<h2>构建</h2>
+<p>ONLINE_CONFIG_PATH=/home/work/dsp/disconf-rd/online-resources
+WAR_ROOT_PATH=/home/work/dsp/disconf-rd/war
+export ONLINE_CONFIG_PATH
+export WAR_ROOT_PATH
+cd disconf-web
+sh deploy/deploy.sh
+这样会在 /home/work/dsp/disconf-rd/war 生成以下结果：</p>
+<p>-disconf-web.war
+-html
+-META-INF
+-WEB-INF</p>
+<h2>上线前的初始化工作</h2>
+<p>初始化数据库：</p>
+<p>可以参考 sql/readme.md 来进行数据库的初始化。注意顺序执行
+0-init_table.sql
+1-init_data.sql
+201512/20151225.sql
+20160701/20160701.sql
+里面默认有6个用户（请注意线上环境删除这些用户以避免潜在的安全问题）</p>
+<p>name    pwd
+admin   admin
+testUser1   MhxzKhl9209
+testUser2   MhxzKhl167
+testUser3   MhxzKhl783
+testUser4   MhxzKhl8758
+testUser5   MhxzKhl112
+如果想自己设置初始化的用户名信息，可以参考代码来自己生成用户：</p>
+<p>src/main/java/com/baidu/disconf/web/tools/UserCreateTools.java
+部署War
+修改server.xml文件，在Host结点下设定Context：</p>
+<p><Context path="" docBase="/home/work/dsp/disconf-rd/war"></Context>
+并设置端口为 8015</p>
+<p>启动Tomcat，即可。</p>
+<h2>部署 前端</h2>
+<p>修改 nginx.conf</p>
+<div class="highlight"><pre><span class="n">upstream</span> <span class="n">disconf</span> <span class="p">{</span>
+    <span class="n">server</span> <span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">8015</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">server</span> <span class="p">{</span>
+
+    <span class="n">listen</span>   <span class="mi">8081</span><span class="p">;</span>
+    <span class="n">server_name</span> <span class="n">disconf</span><span class="o">.</span><span class="n">com</span><span class="p">;</span>
+    <span class="n">access_log</span> <span class="sr">/home/</span><span class="n">work</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">disconf</span><span class="o">/</span><span class="n">access</span><span class="o">.</span><span class="n">log</span><span class="p">;</span>
+    <span class="n">error_log</span> <span class="sr">/home/</span><span class="n">work</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">disconf</span><span class="o">/</span><span class="n">error</span><span class="o">.</span><span class="n">log</span><span class="p">;</span>
+
+    <span class="n">location</span> <span class="o">/</span> <span class="p">{</span>
+        <span class="n">root</span> <span class="sr">/home/</span><span class="n">work</span><span class="o">/</span><span class="n">dsp</span><span class="o">/</span><span class="n">disconf</span><span class="o">-</span><span class="n">rd</span><span class="o">/</span><span class="n">war</span><span class="o">/</span><span class="n">html</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="vg">$query_string</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">expires</span> <span class="n">max</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">location</span> <span class="o">~</span> <span class="o">^/</span><span class="p">(</span><span class="n">api</span><span class="o">|</span><span class="n">export</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">proxy_pass_header</span> <span class="no">Server</span><span class="p">;</span>
+        <span class="n">proxy_set_header</span> <span class="no">Host</span> <span class="vg">$http_host</span><span class="p">;</span>
+        <span class="n">proxy_redirect</span> <span class="n">off</span><span class="p">;</span>
+        <span class="n">proxy_set_header</span> <span class="n">X</span><span class="o">-</span><span class="no">Real</span><span class="o">-</span><span class="no">IP</span> <span class="vg">$remote_addr</span><span class="p">;</span>
+        <span class="n">proxy_set_header</span> <span class="n">X</span><span class="o">-</span><span class="no">Scheme</span> <span class="vg">$scheme</span><span class="p">;</span>
+        <span class="n">proxy_pass</span> <span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="n">disconf</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 
 
-<h2>6.启动服务</h2>
-<div class="highlight"><pre><span class="c1">#/etc/init.d/puppetmaster start</span>
-<span class="c1">#chkconfig puppetmaster on  </span>
-<span class="c1">#/etc/init.d/puppet start </span>
-<span class="c1">#chkconfig puppet on </span>
-</pre></div>
-
-
-<h2>7.客户端测试   ##</h2>
-<p>首先是发起验证<br />
-<code># puppet agent --test --server server</code>  <br />
-服务器端完成验证    <br />
-<code>#puppet cert --list</code> <br />
-<code>#puppet cert sign agent.feisblog.com</code></p>
+<p>关于host
+这里的 host 设置成 disconf.com （可以自定义），但它 必须与 application.properties 里的domain一样。</p>
+<p>然后浏览器的访问域名也是这个。</p>
+<h1>注意</h1>
+<p><strong> 特别指出在打包项目时候请检查python库版本3.<em>版本会报错，请用2.</em>打包
+第二点，在打出来的war包修改诸如zookeeper的配置时，必须重新打包，单纯修改war目录下的文件是无效的 </strong></p>
+<h1>参考文件</h1>
+<p>http://disconf.readthedocs.io/zh_CN/latest/</p>
+<p>https://www.oschina.net/p/disconf</p>
                 </div><!-- /.entry-content -->
                 <div class="comments">
                 <h2>Comments !</h2>
                         <div id="disqus_thread"></div>
                         <script type="text/javascript">
-                           var disqus_identifier = "pages/2015/01/07/puppet_install/";
+                           var disqus_identifier = "pages/2015/04/08/disconf/";
                            (function() {
                                 var dsq = document.createElement('script');
                                 dsq.type = 'text/javascript'; dsq.async = true;
