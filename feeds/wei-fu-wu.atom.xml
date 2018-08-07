@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog</title><link href="http://www.feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/wei-fu-wu.atom.xml" rel="self"></link><id>http://www.feisblog.com/</id><updated>2015-04-08T10:30:00+08:00</updated><entry><title>disconf</title><link href="http://www.feisblog.com/pages/2015/04/08/disconf/" rel="alternate"></link><updated>2015-04-08T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-04-08:pages/2015/04/08/disconf/</id><summary type="html">&lt;h1&gt;Disconf&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog - 微服务</title><link href="feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/wei-fu-wu.atom.xml" rel="self"></link><id>feisblog.com/</id><updated>2015-04-08T10:30:00+08:00</updated><entry><title>disconf</title><link href="feisblog.com/pages/2015/04/08/disconf/" rel="alternate"></link><published>2015-04-08T10:30:00+08:00</published><updated>2015-04-08T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:None,2015-04-08:feisblog.com/pages/2015/04/08/disconf/</id><summary type="html">&lt;h1&gt;Disconf&lt;/h1&gt;
 &lt;h1&gt;为什么要用分布式配置管理中心&lt;/h1&gt;
 &lt;p&gt;最近发生了一件事情，程序中的机密配置文件被开发人员发布到github上，为了避免这个事情发生，采用分布式配置管理中心来管理配置文件，并且为了避免不同环境配置的管理出错。   &lt;/p&gt;
 &lt;p&gt;disconf （Distributed Configuration Management Platform）是一个分布式配置管理平台，能够使程序能够随处运行，脱离不同环境修改不同配置文件。
 专注于各种 分布式系统配置管理 的通用组件/通用平台, 提供统一的配置管理服务。&lt;/p&gt;
 &lt;h1&gt;安装&lt;/h1&gt;
 &lt;h2&gt;安装依赖软件&lt;/h2&gt;
-&lt;p&gt;安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）&lt;br /&gt;
+&lt;p&gt;安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）&lt;br&gt;
 安装Tomcat（apache-tomcat-7.0.50） 
-安装Nginx（nginx/1.5.3）&lt;br /&gt;
-安装 zookeeeper （zookeeper-3.3.0）&lt;br /&gt;
-安装 Redis （2.4.5）&lt;br /&gt;
-准备配置  &lt;br /&gt;
+安装Nginx（nginx/1.5.3）&lt;br&gt;
+安装 zookeeeper （zookeeper-3.3.0 …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Disconf&lt;/h1&gt;
+&lt;h1&gt;为什么要用分布式配置管理中心&lt;/h1&gt;
+&lt;p&gt;最近发生了一件事情，程序中的机密配置文件被开发人员发布到github上，为了避免这个事情发生，采用分布式配置管理中心来管理配置文件，并且为了避免不同环境配置的管理出错。   &lt;/p&gt;
+&lt;p&gt;disconf （Distributed Configuration Management Platform）是一个分布式配置管理平台，能够使程序能够随处运行，脱离不同环境修改不同配置文件。
+专注于各种 分布式系统配置管理 的通用组件/通用平台, 提供统一的配置管理服务。&lt;/p&gt;
+&lt;h1&gt;安装&lt;/h1&gt;
+&lt;h2&gt;安装依赖软件&lt;/h2&gt;
+&lt;p&gt;安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）&lt;br&gt;
+安装Tomcat（apache-tomcat-7.0.50） 
+安装Nginx（nginx/1.5.3）&lt;br&gt;
+安装 zookeeeper （zookeeper-3.3.0）&lt;br&gt;
+安装 Redis （2.4.5）&lt;br&gt;
+准备配置  &lt;br&gt;
 将你的配置文件放到此地址目录下（以下地址可自行设定）：  &lt;/p&gt;
-&lt;p&gt;/home/work/dsp/disconf-rd/online-resources&lt;br /&gt;
+&lt;p&gt;/home/work/dsp/disconf-rd/online-resources&lt;br&gt;
 如果不确定如何配置，&lt;strong&gt;可以拷贝/disconf-web/profile/rd/&lt;/strong&gt;目录下的文件，拷贝过去后修改即可。  &lt;/p&gt;
 &lt;p&gt;配置文件包括：  &lt;/p&gt;
 &lt;ul&gt;
@@ -28,7 +38,7 @@
 &lt;p&gt;设置War包将要被部署的地址（以下地址可自行设定）：  &lt;/p&gt;
 &lt;p&gt;/home/work/dsp/disconf-rd/war  &lt;/p&gt;
 &lt;h2&gt;构建&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="no"&gt;ONLINE_CONFIG_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;online&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;resources&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="no"&gt;ONLINE_CONFIG_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;online&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;resources&lt;/span&gt;
 &lt;span class="no"&gt;WAR_ROOT_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;war&lt;/span&gt;
 &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="no"&gt;ONLINE_CONFIG_PATH&lt;/span&gt;
 &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="no"&gt;WAR_ROOT_PATH&lt;/span&gt;
@@ -68,7 +78,7 @@ testUser5   MhxzKhl112
 &lt;p&gt;启动Tomcat，即可。&lt;/p&gt;
 &lt;h2&gt;部署 前端&lt;/h2&gt;
 &lt;p&gt;修改 nginx.conf&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;disconf&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;disconf&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="mi"&gt;127&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8015&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
@@ -106,4 +116,4 @@ testUser5   MhxzKhl112
 第二点，在打出来的war包修改诸如zookeeper的配置时，必须重新打包，单纯修改war目录下的文件是无效的 &lt;/strong&gt;&lt;/p&gt;
 &lt;h1&gt;参考文件&lt;/h1&gt;
 &lt;p&gt;http://disconf.readthedocs.io/zh_CN/latest/&lt;/p&gt;
-&lt;p&gt;https://www.oschina.net/p/disconf&lt;/p&gt;</summary><category term="disconf"></category></entry></feed>
+&lt;p&gt;https://www.oschina.net/p/disconf&lt;/p&gt;</content><category term="disconf"></category></entry></feed>

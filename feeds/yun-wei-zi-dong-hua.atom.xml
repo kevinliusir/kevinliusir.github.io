@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog</title><link href="http://www.feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/yun-wei-zi-dong-hua.atom.xml" rel="self"></link><id>http://www.feisblog.com/</id><updated>2017-05-22T09:53:25+08:00</updated><entry><title>Docker-EBK</title><link href="http://www.feisblog.com/pages/2017/05/22/Docker-EBK/" rel="alternate"></link><updated>2017-05-22T09:53:25+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2017-05-22:pages/2017/05/22/Docker-EBK/</id><summary type="html">&lt;h1&gt;Docker 安装EBK日志分析&lt;/h1&gt;
-&lt;hr /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog - 运维自动化</title><link href="feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/yun-wei-zi-dong-hua.atom.xml" rel="self"></link><id>feisblog.com/</id><updated>2017-05-22T09:53:25+08:00</updated><entry><title>Docker-EBK</title><link href="feisblog.com/pages/2017/05/22/Docker-EBK/" rel="alternate"></link><published>2017-05-22T09:53:25+08:00</published><updated>2017-05-22T09:53:25+08:00</updated><author><name>Kevin</name></author><id>tag:None,2017-05-22:feisblog.com/pages/2017/05/22/Docker-EBK/</id><summary type="html">&lt;h1&gt;Docker 安装EBK日志分析&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h3&gt;1. EBK介绍&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Elasticsearch是个开源分布式搜索引擎，它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。&lt;/li&gt;
+&lt;li&gt;Logstash是一个完全开源的工具，他可以对你的日志进行收集、过滤，并将其存储供以后使用（如，搜索）。&lt;/li&gt;
+&lt;li&gt;本文档使用Filebeat 代替Logstash &lt;/li&gt;
+&lt;li&gt;Kibana 也是一个开源和免费的工具，它Kibana可以为 Logstash 和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助您汇总、分析和搜索重要数据日志。&lt;/li&gt;
+&lt;li&gt;Filebeat：ELK 协议栈的新成员，一个轻量级开源日志文件数据搜集器，基于 Logstash-Forwarder 源代码开发，是对它的替代。在需要采集日志数据的 server 上安装 Filebeat，并指定日志目录或日志文件后，Filebeat 就能读取数据，迅速发送到 Logstash …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;h1&gt;Docker 安装EBK日志分析&lt;/h1&gt;
+&lt;hr&gt;
 &lt;h3&gt;1. EBK介绍&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Elasticsearch是个开源分布式搜索引擎，它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。&lt;/li&gt;
@@ -10,19 +18,19 @@
 &lt;li&gt;Filebeat：ELK 协议栈的新成员，一个轻量级开源日志文件数据搜集器，基于 Logstash-Forwarder 源代码开发，是对它的替代。在需要采集日志数据的 server 上安装 Filebeat，并指定日志目录或日志文件后，Filebeat 就能读取数据，迅速发送到 Logstash 进行解析，亦或直接发送到 Elasticsearch 进行集中式存储和分析。  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;基于 Filebeat 的 ELK 集群架构&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="" src="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/image005.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="" src="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/image005.png"&gt;&lt;/p&gt;
 &lt;h3&gt;安装Elasticsearch&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vg"&gt;$sudo&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt; &lt;span class="n"&gt;myes&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="ss"&gt;localtime&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;localtime&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;9200&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9200&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;9300&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9300&lt;/span&gt;  &lt;span class="n"&gt;elasticsearch&lt;/span&gt; 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="vg"&gt;$sudo&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt; &lt;span class="n"&gt;myes&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="ss"&gt;localtime&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;localtime&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;9200&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9200&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;9300&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9300&lt;/span&gt;  &lt;span class="n"&gt;elasticsearch&lt;/span&gt; 
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;安装kibana&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt; &lt;span class="n"&gt;mykibana&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="ss"&gt;localtime&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;localtime&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="no"&gt;ELASTICSEARCH_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="ss"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="mi"&gt;192&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;168&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;59&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;201&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9200&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;5601&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5601&lt;/span&gt;  &lt;span class="n"&gt;kibana&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt; &lt;span class="n"&gt;mykibana&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="ss"&gt;localtime&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;localtime&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="no"&gt;ELASTICSEARCH_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="ss"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="mi"&gt;192&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;168&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;59&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;201&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9200&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;5601&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5601&lt;/span&gt;  &lt;span class="n"&gt;kibana&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;安装Filebeat&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;wget&lt;/span&gt;  &lt;span class="ss"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="n"&gt;artifacts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;elastic&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;co&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;downloads&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;beats&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;x86_64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rpm&lt;/span&gt;  
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;wget&lt;/span&gt;  &lt;span class="ss"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="n"&gt;artifacts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;elastic&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;co&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;downloads&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;beats&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;x86_64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rpm&lt;/span&gt;  
 
 &lt;span class="n"&gt;rpm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ivh&lt;/span&gt; &lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;x86_64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rpm&lt;/span&gt;   
 
@@ -30,7 +38,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;filebeat.prospectors:
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;filebeat.prospectors:
 - input_type: log
   paths:
 - /var/log/*.log
@@ -41,14 +49,30 @@ output.elasticsearch:
 
 &lt;p&gt;启动filebeat&lt;/p&gt;
 &lt;p&gt;/etc/init.d/filebeat start &lt;/p&gt;
-&lt;h3&gt;访问kibana  即可看到日志&lt;/h3&gt;</summary><category term="ELK"></category></entry><entry><title>Puppet(二)简单安装配置Apache</title><link href="http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/" rel="alternate"></link><updated>2015-01-08T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-01-08:pages/2015/01/08/puppet_install_Apache/</id><summary type="html">&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
-&lt;p&gt;操作系统：CentOS6.6&lt;br /&gt;
-master.feisblog.com 192.168.212.100 &lt;br /&gt;
+&lt;h3&gt;访问kibana  即可看到日志&lt;/h3&gt;</content><category term="ELK"></category></entry><entry><title>Puppet(二)简单安装配置Apache</title><link href="feisblog.com/pages/2015/01/08/puppet_install_Apache/" rel="alternate"></link><published>2015-01-08T10:30:00+08:00</published><updated>2015-01-08T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:None,2015-01-08:feisblog.com/pages/2015/01/08/puppet_install_Apache/</id><summary type="html">&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
+&lt;p&gt;操作系统：CentOS6.6&lt;br&gt;
+master.feisblog.com 192.168.212.100 &lt;br&gt;
 agent.feisblog.com  192.168.212.110&lt;/p&gt;
 &lt;h2&gt;1. 创建模块目录&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}&lt;/code&gt;&lt;/p&gt;
 &lt;h2&gt;2. 创建安装httpd类&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/install.pp &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/install.pp &lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+     &lt;span class="n"&gt;package&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+       &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;present&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+   &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;   
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;3. 创建启动httpd服务类 …&lt;/h2&gt;</summary><content type="html">&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
+&lt;p&gt;操作系统：CentOS6.6&lt;br&gt;
+master.feisblog.com 192.168.212.100 &lt;br&gt;
+agent.feisblog.com  192.168.212.110&lt;/p&gt;
+&lt;h2&gt;1. 创建模块目录&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;2. 创建安装httpd类&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/install.pp &lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
      &lt;span class="n"&gt;package&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
        &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;present&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -58,7 +82,7 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 
 
 &lt;h2&gt;3. 创建启动httpd服务类&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/service.pp  &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/service.pp  &lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;running&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -72,7 +96,7 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 
 
 &lt;h2&gt;4. 创建httpd 配置文件类，配置文件通过puppet获取（目录：/etc/puppet/modules/httpd/files/httpd.conf）&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/conf.pp&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/conf.pp&lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd.conf&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;present&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -89,7 +113,7 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 
 
 &lt;h2&gt;5. 创建主配置文件init.pp&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/init.pp&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/init.pp&lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
     &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt; 
@@ -97,7 +121,7 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 
 
 &lt;h2&gt;6. 配置客户端节点&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/manifests/nodes/agent.feisblog.com.pp&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#vim /etc/puppet/manifests/nodes/agent.feisblog.com.pp&lt;/span&gt;
 &lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;agent.feisblog.com&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
    &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt; 
@@ -105,15 +129,23 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 
 
 &lt;h2&gt;7. 将节点载入puppet的site.pp 文件&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/manifests/site.pp&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#vim /etc/puppet/manifests/site.pp&lt;/span&gt;
 &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;nodes/agent.feisblog.com.pp&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;8. 在agent端&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com --noop&lt;/code&gt;          &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</summary><category term="puppet"></category></entry><entry><title>Puppet(一) 安装</title><link href="http://www.feisblog.com/pages/2015/01/07/puppet_install/" rel="alternate"></link><updated>2015-01-07T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-01-07:pages/2015/01/07/puppet_install/</id><summary type="html">&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
-&lt;p&gt;操作系统：Centos6.6&lt;br /&gt;
+&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</content><category term="puppet"></category></entry><entry><title>Puppet(一) 安装</title><link href="feisblog.com/pages/2015/01/07/puppet_install/" rel="alternate"></link><published>2015-01-07T10:30:00+08:00</published><updated>2015-01-07T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:None,2015-01-07:feisblog.com/pages/2015/01/07/puppet_install/</id><summary type="html">&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
+&lt;p&gt;操作系统：Centos6.6&lt;br&gt;
+--------------------- | -------------
+master.feisblog.com   | 192.168.212.100
+agent.feisblog.com    | 192.168.212.110&lt;/p&gt;
+&lt;h2&gt;1安装Centos EPEL 源&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;#rpm -ivh  http://mirrors.yun-idc.com/epel/6/x86_64/epel-release-6-8.noarch.rpm&lt;/code&gt;   &lt;/p&gt;
+&lt;h2&gt;2.安装puppetLabs 源 ##&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;#rpm -ivh http://yum.puppetlabs.com/el/6Server/products/x86_64/puppetlabs-release-6-11.noarch …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
+&lt;p&gt;操作系统：Centos6.6&lt;br&gt;
 --------------------- | -------------
 master.feisblog.com   | 192.168.212.100
 agent.feisblog.com    | 192.168.212.110&lt;/p&gt;
@@ -122,22 +154,22 @@ agent.feisblog.com    | 192.168.212.110&lt;/p&gt;
 &lt;h2&gt;2.安装puppetLabs 源 ##&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#rpm -ivh http://yum.puppetlabs.com/el/6Server/products/x86_64/puppetlabs-release-6-11.noarch.rpm&lt;/code&gt;   &lt;/p&gt;
 &lt;h2&gt;3.安装服务器端&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;#yum install puppet-server&lt;/code&gt; &lt;br /&gt;
-检查安装： &lt;br /&gt;
-&lt;code&gt;#puppet -V&lt;/code&gt; &lt;br /&gt;
+&lt;p&gt;&lt;code&gt;#yum install puppet-server&lt;/code&gt; &lt;br&gt;
+检查安装： &lt;br&gt;
+&lt;code&gt;#puppet -V&lt;/code&gt; &lt;br&gt;
 &lt;code&gt;#facter -v&lt;/code&gt;   &lt;/p&gt;
 &lt;h2&gt;4.在客户端   ##&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#yum install puppet&lt;/code&gt;   &lt;/p&gt;
 &lt;h2&gt;5.配置&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;5.1 主机名和host 文件的修改   &lt;/li&gt;
-&lt;li&gt;5.2 设置NTP时间同步 &lt;br /&gt;
-    在crontab中加入：     &lt;br /&gt;
+&lt;li&gt;5.2 设置NTP时间同步 &lt;br&gt;
+    在crontab中加入：     &lt;br&gt;
 &lt;code&gt;*/10 * * * *  ntpdate -s time.nist.gov&lt;/code&gt;  &lt;/li&gt;
-&lt;li&gt;5.3 配置site.pp &lt;br /&gt;
+&lt;li&gt;5.3 配置site.pp &lt;br&gt;
 &lt;code&gt;#vim /etc/puppet/manifests/site.pp&lt;/code&gt;   &lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
     &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;puppettest1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
         &lt;span class="n"&gt;content&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="no"&gt;Hello&lt;/span&gt; &lt;span class="no"&gt;World&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
@@ -146,7 +178,7 @@ agent.feisblog.com    | 192.168.212.110&lt;/p&gt;
 
 
 &lt;h2&gt;6.启动服务&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#/etc/init.d/puppetmaster start&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#/etc/init.d/puppetmaster start&lt;/span&gt;
 &lt;span class="c1"&gt;#chkconfig puppetmaster on  &lt;/span&gt;
 &lt;span class="c1"&gt;#/etc/init.d/puppet start &lt;/span&gt;
 &lt;span class="c1"&gt;#chkconfig puppet on &lt;/span&gt;
@@ -154,8 +186,8 @@ agent.feisblog.com    | 192.168.212.110&lt;/p&gt;
 
 
 &lt;h2&gt;7.客户端测试   ##&lt;/h2&gt;
-&lt;p&gt;首先是发起验证&lt;br /&gt;
-&lt;code&gt;# puppet agent --test --server server&lt;/code&gt;  &lt;br /&gt;
-服务器端完成验证    &lt;br /&gt;
-&lt;code&gt;#puppet cert --list&lt;/code&gt; &lt;br /&gt;
-&lt;code&gt;#puppet cert sign agent.feisblog.com&lt;/code&gt;&lt;/p&gt;</summary><category term="puppet"></category></entry></feed>
+&lt;p&gt;首先是发起验证&lt;br&gt;
+&lt;code&gt;# puppet agent --test --server server&lt;/code&gt;  &lt;br&gt;
+服务器端完成验证    &lt;br&gt;
+&lt;code&gt;#puppet cert --list&lt;/code&gt; &lt;br&gt;
+&lt;code&gt;#puppet cert sign agent.feisblog.com&lt;/code&gt;&lt;/p&gt;</content><category term="puppet"></category></entry></feed>

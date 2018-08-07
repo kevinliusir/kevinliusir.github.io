@@ -1,53 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kevin's Blog</title><link>http://www.feisblog.com/</link><description>DevOps、大数据、云计算</description><atom:link href="http://www.feisblog.com/feeds/kevin.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 22 May 2017 09:53:25 +0800</lastBuildDate><item><title>Docker-EBK</title><link>http://www.feisblog.com/pages/2017/05/22/Docker-EBK/</link><description>&lt;h1&gt;Docker 安装EBK日志分析&lt;/h1&gt;
-&lt;hr /&gt;
+<rss version="2.0"><channel><title>Kevin's Blog - Kevin</title><link>feisblog.com/</link><description>专注自动化运维、大数据、云计算</description><lastBuildDate>Mon, 22 May 2017 09:53:25 +0800</lastBuildDate><item><title>Docker-EBK</title><link>feisblog.com/pages/2017/05/22/Docker-EBK/</link><description>&lt;h1&gt;Docker 安装EBK日志分析&lt;/h1&gt;
+&lt;hr&gt;
 &lt;h3&gt;1. EBK介绍&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Elasticsearch是个开源分布式搜索引擎，它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。&lt;/li&gt;
 &lt;li&gt;Logstash是一个完全开源的工具，他可以对你的日志进行收集、过滤，并将其存储供以后使用（如，搜索）。&lt;/li&gt;
 &lt;li&gt;本文档使用Filebeat 代替Logstash &lt;/li&gt;
 &lt;li&gt;Kibana 也是一个开源和免费的工具，它Kibana可以为 Logstash 和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助您汇总、分析和搜索重要数据日志。&lt;/li&gt;
-&lt;li&gt;Filebeat：ELK 协议栈的新成员，一个轻量级开源日志文件数据搜集器，基于 Logstash-Forwarder 源代码开发，是对它的替代。在需要采集日志数据的 server 上安装 Filebeat，并指定日志目录或日志文件后，Filebeat 就能读取数据，迅速发送到 Logstash 进行解析，亦或直接发送到 Elasticsearch 进行集中式存储和分析。  &lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;基于 Filebeat 的 ELK 集群架构&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="" src="https://www.ibm.com/developerworks/cn/opensource/os-cn-elk-filebeat/image005.png" /&gt;&lt;/p&gt;
-&lt;h3&gt;安装Elasticsearch&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vg"&gt;$sudo&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt; &lt;span class="n"&gt;myes&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="ss"&gt;localtime&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;localtime&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;9200&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9200&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;9300&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9300&lt;/span&gt;  &lt;span class="n"&gt;elasticsearch&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;安装kibana&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt; &lt;span class="n"&gt;mykibana&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="ss"&gt;localtime&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;localtime&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="no"&gt;ELASTICSEARCH_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="ss"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="mi"&gt;192&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;168&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;59&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;201&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9200&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;5601&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5601&lt;/span&gt;  &lt;span class="n"&gt;kibana&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;安装Filebeat&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;wget&lt;/span&gt;  &lt;span class="ss"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="n"&gt;artifacts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;elastic&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;co&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;downloads&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;beats&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;x86_64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rpm&lt;/span&gt;  
-
-&lt;span class="n"&gt;rpm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ivh&lt;/span&gt; &lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;x86_64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rpm&lt;/span&gt;   
-
-&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;filebeat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yml&lt;/span&gt;   
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;filebeat.prospectors:
-- input_type: log
-  paths:
-- /var/log/*.log
-output.elasticsearch:
-  hosts: [&amp;quot;localhost:9200&amp;quot;]
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;启动filebeat&lt;/p&gt;
-&lt;p&gt;/etc/init.d/filebeat start &lt;/p&gt;
-&lt;h3&gt;访问kibana  即可看到日志&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Mon, 22 May 2017 09:53:25 +0800</pubDate><guid>tag:www.feisblog.com,2017-05-22:pages/2017/05/22/Docker-EBK/</guid><category>ELK</category></item><item><title>Docker Machine 创建Swarm 集群</title><link>http://www.feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</link><description>&lt;h1&gt;1swarm主节点&lt;/h1&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;#docker run swarm create
+&lt;li&gt;Filebeat：ELK 协议栈的新成员，一个轻量级开源日志文件数据搜集器，基于 Logstash-Forwarder 源代码开发，是对它的替代。在需要采集日志数据的 server 上安装 Filebeat，并指定日志目录或日志文件后，Filebeat 就能读取数据，迅速发送到 Logstash …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Mon, 22 May 2017 09:53:25 +0800</pubDate><guid isPermaLink="false">tag:None,2017-05-22:feisblog.com/pages/2017/05/22/Docker-EBK/</guid><category>ELK</category></item><item><title>Docker Machine 创建Swarm 集群</title><link>feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</link><description>&lt;h1&gt;1swarm主节点&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#docker run swarm create
 a03ab86659df32ea3813d748f8a42f82
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;docker-machine create \
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker-machine create \
 -d virtualbox \
 --swarm \
 --swarm-master \
@@ -57,7 +23,7 @@ swarm-master
 
 
 &lt;h1&gt;2创建Swarm从节点&lt;/h1&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;docker-machine create \
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;docker-machine create \
 -d virtualbox \
 --swarm \
 --swarm-discovery token://&amp;lt;TOKEN-FROM-ABOVE&amp;gt; \
@@ -67,115 +33,18 @@ swarm-node
 
 &lt;h1&gt;3. 测试和查看&lt;/h1&gt;
 &lt;p&gt;然后，我们就可以跨节点地运行我们所需的容器了。在这里，我们还要检查一下是否一切正常。所以，运行docker info命令来检查Swarm集群的信息。&lt;/p&gt;
-&lt;h1&gt;docker info&lt;/h1&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 15 Mar 2017 23:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2017-03-15:pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</guid><category>docker</category></item><item><title>disconf</title><link>http://www.feisblog.com/pages/2015/04/08/disconf/</link><description>&lt;h1&gt;Disconf&lt;/h1&gt;
+&lt;h1&gt;docker info&lt;/h1&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 15 Mar 2017 23:30:00 +0800</pubDate><guid isPermaLink="false">tag:None,2017-03-15:feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</guid><category>docker</category></item><item><title>disconf</title><link>feisblog.com/pages/2015/04/08/disconf/</link><description>&lt;h1&gt;Disconf&lt;/h1&gt;
 &lt;h1&gt;为什么要用分布式配置管理中心&lt;/h1&gt;
 &lt;p&gt;最近发生了一件事情，程序中的机密配置文件被开发人员发布到github上，为了避免这个事情发生，采用分布式配置管理中心来管理配置文件，并且为了避免不同环境配置的管理出错。   &lt;/p&gt;
 &lt;p&gt;disconf （Distributed Configuration Management Platform）是一个分布式配置管理平台，能够使程序能够随处运行，脱离不同环境修改不同配置文件。
 专注于各种 分布式系统配置管理 的通用组件/通用平台, 提供统一的配置管理服务。&lt;/p&gt;
 &lt;h1&gt;安装&lt;/h1&gt;
 &lt;h2&gt;安装依赖软件&lt;/h2&gt;
-&lt;p&gt;安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）&lt;br /&gt;
+&lt;p&gt;安装Mysql（Ver 14.12 Distrib 5.0.45, for unknown-linux-gnu (x86_64) using EditLine wrapper）&lt;br&gt;
 安装Tomcat（apache-tomcat-7.0.50） 
-安装Nginx（nginx/1.5.3）&lt;br /&gt;
-安装 zookeeeper （zookeeper-3.3.0）&lt;br /&gt;
-安装 Redis （2.4.5）&lt;br /&gt;
-准备配置  &lt;br /&gt;
-将你的配置文件放到此地址目录下（以下地址可自行设定）：  &lt;/p&gt;
-&lt;p&gt;/home/work/dsp/disconf-rd/online-resources&lt;br /&gt;
-如果不确定如何配置，&lt;strong&gt;可以拷贝/disconf-web/profile/rd/&lt;/strong&gt;目录下的文件，拷贝过去后修改即可。  &lt;/p&gt;
-&lt;p&gt;配置文件包括：  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;jdbc-mysql.properties (数据库配置)&lt;/li&gt;
-&lt;li&gt;redis-config.properties (Redis配置，主要用于web登录使用)&lt;/li&gt;
-&lt;li&gt;zoo.properties (Zookeeper配置)&lt;/li&gt;
-&lt;li&gt;application.properties (应用配置）
-注意，记得执行将application-demo.properties复制成application.properties：&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;cp application-demo.properties application.properties
-&lt;em&gt;注意，即使只有一个redis，也应该配置两个redis client，否则将造成内部错误。&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;设置War包将要被部署的地址（以下地址可自行设定）：  &lt;/p&gt;
-&lt;p&gt;/home/work/dsp/disconf-rd/war  &lt;/p&gt;
-&lt;h2&gt;构建&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="no"&gt;ONLINE_CONFIG_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;online&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;resources&lt;/span&gt;
-&lt;span class="no"&gt;WAR_ROOT_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;war&lt;/span&gt;
-&lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="no"&gt;ONLINE_CONFIG_PATH&lt;/span&gt;
-&lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="no"&gt;WAR_ROOT_PATH&lt;/span&gt;
-&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;web&lt;/span&gt;
-&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;这样会在 /home/work/dsp/disconf-rd/war 生成以下结果：  &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;-disconf-web.war&lt;/li&gt;
-&lt;li&gt;-html&lt;/li&gt;
-&lt;li&gt;-META-INF&lt;/li&gt;
-&lt;li&gt;-WEB-INF&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;上线前的初始化工作&lt;/h2&gt;
-&lt;p&gt;初始化数据库：&lt;/p&gt;
-&lt;p&gt;可以参考 sql/readme.md 来进行数据库的初始化。注意顺序执行
-0-init_table.sql
-1-init_data.sql
-201512/20151225.sql
-20160701/20160701.sql
-里面默认有6个用户（请注意线上环境删除这些用户以避免潜在的安全问题）&lt;/p&gt;
-&lt;p&gt;name    pwd
-admin   admin
-testUser1   MhxzKhl9209
-testUser2   MhxzKhl167
-testUser3   MhxzKhl783
-testUser4   MhxzKhl8758
-testUser5   MhxzKhl112
-如果想自己设置初始化的用户名信息，可以参考代码来自己生成用户：&lt;/p&gt;
-&lt;p&gt;src/main/java/com/baidu/disconf/web/tools/UserCreateTools.java
-部署War
-修改server.xml文件，在Host结点下设定Context：&lt;/p&gt;
-&lt;p&gt;&lt;Context path="" docBase="/home/work/dsp/disconf-rd/war"&gt;&lt;/Context&gt;
-并设置端口为 8015&lt;/p&gt;
-&lt;p&gt;启动Tomcat，即可。&lt;/p&gt;
-&lt;h2&gt;部署 前端&lt;/h2&gt;
-&lt;p&gt;修改 nginx.conf&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;disconf&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="mi"&gt;127&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8015&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-&lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-
-    &lt;span class="n"&gt;listen&lt;/span&gt;   &lt;span class="mi"&gt;8081&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="n"&gt;server_name&lt;/span&gt; &lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="n"&gt;access_log&lt;/span&gt; &lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;access&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="n"&gt;error_log&lt;/span&gt; &lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-    &lt;span class="n"&gt;location&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="n"&gt;root&lt;/span&gt; &lt;span class="sr"&gt;/home/&lt;/span&gt;&lt;span class="n"&gt;work&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;war&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;html&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vg"&gt;$query_string&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="n"&gt;expires&lt;/span&gt; &lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-
-    &lt;span class="n"&gt;location&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="o"&gt;^/&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;api&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;export&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="n"&gt;proxy_pass_header&lt;/span&gt; &lt;span class="no"&gt;Server&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;proxy_set_header&lt;/span&gt; &lt;span class="no"&gt;Host&lt;/span&gt; &lt;span class="vg"&gt;$http_host&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;proxy_redirect&lt;/span&gt; &lt;span class="n"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;proxy_set_header&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="no"&gt;Real&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="no"&gt;IP&lt;/span&gt; &lt;span class="vg"&gt;$remote_addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;proxy_set_header&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="no"&gt;Scheme&lt;/span&gt; &lt;span class="vg"&gt;$scheme&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;proxy_pass&lt;/span&gt; &lt;span class="ss"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="n"&gt;disconf&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;关于host
-这里的 host 设置成 disconf.com （可以自定义），但它 必须与 application.properties 里的domain一样。&lt;/p&gt;
-&lt;p&gt;然后浏览器的访问域名也是这个。&lt;/p&gt;
-&lt;h1&gt;注意&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt; 特别指出在打包项目时候请检查python库版本3.&lt;em&gt;版本会报错，请用2.&lt;/em&gt;打包
-第二点，在打出来的war包修改诸如zookeeper的配置时，必须重新打包，单纯修改war目录下的文件是无效的 &lt;/strong&gt;&lt;/p&gt;
-&lt;h1&gt;参考文件&lt;/h1&gt;
-&lt;p&gt;http://disconf.readthedocs.io/zh_CN/latest/&lt;/p&gt;
-&lt;p&gt;https://www.oschina.net/p/disconf&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 08 Apr 2015 10:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2015-04-08:pages/2015/04/08/disconf/</guid><category>disconf</category></item><item><title>CloudStack_install</title><link>http://www.feisblog.com/pages/2015/03/18/CloudStack_install/</link><description>&lt;h1&gt;CloudStack的安装和使用&lt;/h1&gt;
-&lt;hr /&gt;
+安装Nginx（nginx/1.5.3）&lt;br&gt;
+安装 zookeeeper （zookeeper-3.3.0 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 08 Apr 2015 10:30:00 +0800</pubDate><guid isPermaLink="false">tag:None,2015-04-08:feisblog.com/pages/2015/04/08/disconf/</guid><category>disconf</category></item><item><title>CloudStack_install</title><link>feisblog.com/pages/2015/03/18/CloudStack_install/</link><description>&lt;h1&gt;CloudStack的安装和使用&lt;/h1&gt;
+&lt;hr&gt;
 &lt;h2&gt;目录&lt;/h2&gt;
 &lt;h3&gt;1.CloudStack简介&lt;/h3&gt;
 &lt;h3&gt;先决条件&lt;/h3&gt;
@@ -184,292 +53,18 @@ CentOS 6.4 x86_64 的 minimal install CD &lt;a href="http://mirrors.kernel.org/c
 一个以xxx.xxx.xxx.1/24作为网关的C类地址并且该网络中不能存在DHCP服务器；运行Cloudstack 的机器不能使用动态地址。这样做只是为了简单起见，我的环境中是192.168.1.0/24网络。&lt;/p&gt;
 &lt;h3&gt;安装和规划cloudstack&lt;/h3&gt;
 &lt;p&gt;1.安装CentOS 6.7 x86_64 最小化安装
-2.安装网络 
-3.配置host文件
-4.关闭selinux
-5.配置NTP 
-6.配置cloudstack 源&lt;/p&gt;
-&lt;h3&gt;配置NFS 存储&lt;/h3&gt;
-&lt;p&gt;主存储和辅助存储我们都使用NFS存储。接下来我们要设置两个NFS共享。首先安装nfs-utils。&lt;/p&gt;
-&lt;h1&gt;yum install nfs-utils&lt;/h1&gt;
-&lt;p&gt;现在我们在NFS服务器上配置两个不同的共享目录。我们需要在/etc/exports文件中分别配置一下。确保这个文件中包含下面内容：&lt;/p&gt;
-&lt;p&gt;/secondary &lt;em&gt;(rw,async,no_root_squash)
-/primary &lt;/em&gt;(rw,async,no_root_squash)&lt;/p&gt;
-&lt;p&gt;/secondary &lt;em&gt;(rw,async,no_root_squash)
-/primary &lt;/em&gt;(rw,async,no_root_squash)
-自己测试玩玩的话，可以这样配置nfs，生产环境不能这样， * 表示所以客户端都能挂载这2个目录，当然这里把ip固定死也不是很好的解决方案，毕竟虚拟机也是要能挂载二级存储的，可以使用防火墙或者hosts.allow deny来控制&lt;/p&gt;
-&lt;p&gt;FAS2220A 作为/primary&lt;br /&gt;
-FAS2220B 作为/secondary&lt;/p&gt;
-&lt;p&gt;安装 cloudstack&lt;/p&gt;
-&lt;p&gt;cloudstack-setup-databases cloud:whfdc027@localhost --deploy-as=root:whfdc027&lt;/p&gt;
-&lt;h3&gt;CloudStack自定义KVM虚拟化本地存储路径&lt;/h3&gt;
-&lt;p&gt;方法很简单，修改kvm端 cloudstack agent配置文件agent.properties即可。&lt;/p&gt;
-&lt;h1&gt;vim /etc/cloudstack/agent/agent.properties&lt;/h1&gt;
-&lt;p&gt;local.storage.path=/data/&lt;/p&gt;
-&lt;p&gt;如何验证修改成功&lt;/p&gt;
-&lt;p&gt;使用软连接 
-cd /var/lib/libvirt
-cp  /var/lib/libvirt/&lt;em&gt; /data/kvm
-rm -rf boot/ dnsmasq/ filesystems/ lxc/ network/ qemu/ 
-ln -s /data/kvm/&lt;/em&gt; ./&lt;/p&gt;
-&lt;p&gt;或者更有效的方法是： &lt;/p&gt;
-&lt;p&gt;ln -sf /var/lib/libvirt/images /home/xxx/my_images
-&lt;strong&gt;
-第二种方式&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;添加第二个存储池&lt;/p&gt;
-&lt;h1&gt;virsh pool-dumpxml default &amp;gt; pool.xml&lt;/h1&gt;
-&lt;p&gt;edit pool.xml # with new name and path&lt;/p&gt;
-&lt;h1&gt;virsh pool-create pool.xml&lt;/h1&gt;
-&lt;h1&gt;virsh pool-refresh name&lt;/h1&gt;
-&lt;p&gt;如果您打算需要删除xml文件如果您打算UUID字段保留默认池
-One side note: You will need to delete the UUID field in the xml file if you intend to keep the default pool - no two pools defined can have the same UUID - but keep the brackets like so: '&lt;uuid&gt;&lt;/uuid&gt;'&lt;/p&gt;
-&lt;p&gt;http://www.ibm.com/support/knowledgecenter/linuxonibm/liaat/liaatsecstorotherdir.htm&lt;/p&gt;
-&lt;p&gt;https://ask.fedoraproject.org/en/question/9584/while-using-libvirt-how-can-i-use-a-location-other-than-varliblibvirtimages-to-store-my-images/&lt;/p&gt;
-&lt;p&gt;http://ask.xmodulo.com/change-default-location-libvirt-vm-images.html&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="vi"&gt;@cloud&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;agent01&lt;/span&gt; &lt;span class="n"&gt;images&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c1"&gt;# virsh pool-list&lt;/span&gt;
-&lt;span class="no"&gt;Name&lt;/span&gt;                 &lt;span class="no"&gt;State&lt;/span&gt;      &lt;span class="no"&gt;Autostart&lt;/span&gt; 
-&lt;span class="o"&gt;-----------------------------------------&lt;/span&gt;
-&lt;span class="n"&gt;acd2c7fb&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;45&lt;/span&gt;&lt;span class="n"&gt;dc&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;d1c&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;901&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mo"&gt;060&lt;/span&gt;&lt;span class="n"&gt;df1248434&lt;/span&gt; &lt;span class="n"&gt;active&lt;/span&gt;     &lt;span class="n"&gt;no&lt;/span&gt;        
-&lt;span class="n"&gt;f9371e71&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c689&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;e12&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a6a6&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fadf7712c964&lt;/span&gt; &lt;span class="n"&gt;active&lt;/span&gt;     &lt;span class="n"&gt;no&lt;/span&gt;
-
-&lt;span class="c1"&gt;#virsh pool-dumpxml acd2c7fb-45dc-4d1c-901a-060df1248434  &amp;gt; pool.xml&lt;/span&gt;
-&lt;span class="c1"&gt;#virsh pool-destroy acd2c7fb-45dc-4d1c-901a-060df1248434&lt;/span&gt;
-&lt;span class="c1"&gt;#virsh pool-create pool.xml&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h6&gt;&lt;/h6&gt;
-&lt;p&gt;cloudstack-setup-databases cloud:cloud@localhost --deploy-as=root:qwe123! &lt;/p&gt;
-&lt;p&gt;cloudstack-setup-management&lt;/p&gt;
-&lt;p&gt;4.8模板
-http://d21ifhcun6b1t2.cloudfront.net/templates/4.2/systemvmtemplate-2013-06-12-master-kvm.qcow2.bz2&lt;/p&gt;
-&lt;p&gt;http://d21ifhcun6b1t2.cloudfront.net/templates/4.8/system*.qcow2.bz2&lt;/p&gt;
-&lt;p&gt;导入本地模板
-/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt -m /secondary&lt;/p&gt;
-&lt;p&gt;/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt \
--m /secondary \
--u http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-kvm.qcow2.bz2 \
--h kvm -F&lt;/p&gt;
-&lt;h3&gt;安装客户端&lt;/h3&gt;
-&lt;p&gt;1.设置host文件和主机名&lt;/p&gt;
-&lt;h1&gt;主机名&lt;/h1&gt;
-&lt;p&gt;sed -i s/HOSTNAME=localhost.localdomain/HOSTNAME=cloud-agent03.fdc.com.cn/g&lt;/p&gt;
-&lt;h1&gt;host 文件&lt;/h1&gt;
-&lt;p&gt;192.168.1.240 cloud-server cloud-server.fdc.com.cn
-192.168.1.241 cloud-agent01 cloud-agent01.fdc.com.cn
-192.168.1.242 cloud-agent02 cloud-agent02.fdc.com.cn
-192.168.1.243 cloud-agent03 cloud-agent03.fdc.com.cn
-192.168.1.244 cloud-agent04 cloud-agent04.fdc.com.cn
-2.关闭selinux &amp;amp;防火墙
-echo "SELINUX=disabled" &amp;gt; /etc/selinux/config
-echo "SELINUXTYPE=targeted" &amp;gt;&amp;gt;/etc/selinux/config&lt;/p&gt;
-&lt;h1&gt;limit&lt;/h1&gt;
-&lt;p&gt;echo "&lt;em&gt;               soft    nproc             65535" &amp;gt;&amp;gt; /etc/security/limits.conf
-echo "&lt;/em&gt;               hard    nproc             65535" &amp;gt;&amp;gt; /etc/security/limits.conf
-echo "&lt;em&gt;               soft    nofile             65535" &amp;gt;&amp;gt; /etc/security/limits.conf
-echo "&lt;/em&gt;               hard    nofile             65535" &amp;gt;&amp;gt; /etc/security/limits.conf&lt;/p&gt;
-&lt;h1&gt;iptables&lt;/h1&gt;
-&lt;p&gt;service iptables stop 
-chkconfig iptables off &lt;/p&gt;
-&lt;p&gt;3.安装NTP、wget等
-yum install ntp wget epel-release lrzsz -y 
-/etc/init.d/ntpd start
-chkconfig ntpd on &lt;/p&gt;
-&lt;p&gt;5.设置SSH 
-echo "UseDNS no" &amp;gt;&amp;gt; /etc/ssh/sshd_config
-echo "StrictHostKeyChecking no" &amp;gt;&amp;gt;/etc/ssh/ssh_config
-/etc/init.d/sshd restart&lt;/p&gt;
-&lt;p&gt;4.替换阿里云yum源
-mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
-wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
-yum clean all &amp;amp;&amp;amp; yum makecache &amp;amp;&amp;amp; yum update -y &lt;/p&gt;
-&lt;p&gt;4.安装cloud-agent 
-配置cloudstackyum源并安装，我这里下载下来本地安装&lt;/p&gt;
-&lt;p&gt;yum localinstall /usr/src/cloudstack-agent-4.8.0-1.el6.x86_64.rpm /usr/src/cloudstack-common-4.8.0-1.el6.x86_64.rpm -y&lt;/p&gt;
-&lt;p&gt;rm -rf /usr/src/*.rpm&lt;/p&gt;
-&lt;p&gt;6.设置本地存储路径
-mkdir -p /data/kvm/images&lt;/p&gt;
-&lt;p&gt;echo "local.storage.path=/data/kvm/images/" &amp;gt;&amp;gt; /etc/cloudstack/agent/agent.properties
-/etc/init.d/cloudstack-agent restart&lt;/p&gt;
-&lt;p&gt;7.配置QEMU
-KVM只有一个相对简单的配置项。我们需要编辑QEMU VNC配置。确保/etc/libvirt/qemu.conf文件有如下所示的行，并将其注释去掉。
-vnc_listen=0.0.0.0&lt;/p&gt;
-&lt;p&gt;8.配置Libvirt
-CloudStack使用libvirt管理虚拟机。因此正确的配置libvirt是非常重要的。Libvirt是cloud-agent的一个依赖组件，它应该已经安装好了。&lt;/p&gt;
-&lt;p&gt;为了实现动态迁移libvirt需要监听不可靠的TCP连接。还需要关闭libvirts尝试使用组播DNS进行广播。这些都是在 /etc/libvirt/libvirtd.conf文件中进行配置。
-设置下列参数：
-listen_tls = 0
-listen_tcp = 1
-tcp_port = "16059"
-auth_tcp = "none"
-mdns_adv = 0
-仅仅在libvirtd.conf中启用”listen_tcp”是不够的，我们还必须修改/etc/sysconfig/libvirtd中的参数:
-取消下行的注释：&lt;/p&gt;
-&lt;h1&gt;LIBVIRTD_ARGS="--listen"&lt;/h1&gt;
-&lt;p&gt;重启libvirt&lt;/p&gt;
-&lt;h1&gt;service libvirtd restart&lt;/h1&gt;
-&lt;p&gt;KVM配置完成结束对KVM的安装和配置之后，接下来需要在CloudStack管理界面中实际配置我们的云。&lt;/p&gt;
-&lt;h2&gt;&lt;/h2&gt;
-&lt;h3&gt;2.KVM环境搭建&lt;/h3&gt;
-&lt;p&gt;1.如何规划cloud环境
-NFS带宽如何？NFS 到服务器最好使用1G带宽
-宿主机性能如何？内存，CPU性能？
-如果是本地硬盘，本地硬盘空间如何？是否够用几台服务器的硬盘的存储？
-集群中需要多少个主存储？且总存储量多大？
-每个资源域需要多少个二级存储？&lt;/p&gt;
-&lt;h3&gt;3.KVM 生产应用&lt;/h3&gt;
-&lt;h3&gt;3.概念&lt;/h3&gt;
-&lt;p&gt;Cluster 是多个主机组成的一个集群。同一个 cluster 中的主机有相同的硬件，相同的 Hypervisor，和共用同样的存储。同一个 cluster 中的虚拟机，可以实现无中断服务地从一个主机迁移到另外一个上。&lt;/p&gt;
-&lt;h4&gt;主存储（Primary Storage）&lt;/h4&gt;
-&lt;p&gt;它为该 cluster 中的主机的全部虚拟机提供磁盘卷。一个 cluster 至少有一个一级存储，且在部署时位置要临近主机以提供高性能。&lt;/p&gt;
-&lt;h4&gt;二级存储&lt;/h4&gt;
-&lt;p&gt;Secondary Storage VM 二级存储虚拟机简称ssvm， 作为系统虚机的一种，在cloudstack中扮演了很重要的角色，没有它很多功能都无法实现。简单来说ssvm主要用来管理二级存储，也就是对二级存储相关的操作都会通过它来完成。每一个资源域可以有多个SSVM， 当SSVM被删除或停止，它会自动被重建并启动。&lt;/p&gt;
-&lt;h3&gt;4.Cloudstack存储在本地&lt;/h3&gt;
-&lt;p&gt;启用本地存储：
-不启用本地存储话，所有的虚拟机硬盘文件将存在网络存储服务器上，这样可以达到在不停机的情况下动态迁移虚机，保证虚拟机的高可用性。但凡事有利必有弊，如果没有硬件支持的情况下，NFS无法保证高可用性，另外虚机频繁读写的话，性能将受网络约束。因此请谨慎选择。
-注：在“启用本地存储”上打勾的话，会弹出一个提示框。它的意思是系统虚机可以在本地存储上启动也可以在网络存储上启动。如果你想让系统虚机在本地存储上启动，则需要改一个全局参数，如果你想让系统虚机在网络存储上启动，则需要在创建完区域后还必须将网络主存储添加到区域上，系统虚机才能启动。&lt;/p&gt;
-&lt;p&gt;再注：“启用本地存储”后远没有它提示框中说的那么简单，你必须之后在“服务提供 – 计算方案”、“服务提供 – 磁盘方案”处添加使用本地存储的方案才能真正使用，否则创建虚拟机必然失败。&lt;/p&gt;
-&lt;h3&gt;如何优化cloudstack&lt;/h3&gt;
-&lt;h3&gt;如何优化KVM&lt;/h3&gt;
-&lt;h3&gt;如何监控cloudstack&lt;/h3&gt;
-&lt;h3&gt;本地存储的虚拟机如何动态扩展硬盘&lt;/h3&gt;
-&lt;h3&gt;本地存储的虚拟机如何动态扩展内存和CPU&lt;/h3&gt;
-&lt;h3&gt;创建模板&lt;/h3&gt;
-&lt;p&gt;1.通过ISO 安装完操作系统
-2.修改操作系统默认配置
-http://cloudstack-administration.readthedocs.org/zh_CN/latest/templates.html 参考&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#1.修改网络配置文件&lt;/span&gt;
-&lt;span class="c1"&gt;#vim /etc/sysconfig/network-scripts/ifcfg-eth0&lt;/span&gt;
-&lt;span class="no"&gt;DEVICE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;eth0&lt;/span&gt;
-&lt;span class="no"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="no"&gt;Ethernet&lt;/span&gt;
-&lt;span class="no"&gt;BOOTPROTO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;dhcp&lt;/span&gt;
-&lt;span class="no"&gt;ONBOOT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;yes&lt;/span&gt;
-&lt;span class="c1"&gt;#2.删除MAC与网卡绑定&lt;/span&gt;
-&lt;span class="c1"&gt;#rm -f /etc/udev/rules.d/70-persistent-net.rules&lt;/span&gt;
-&lt;span class="c1"&gt;#rm -f /etc/udev/rules.d/70-persistent-net.rules&lt;/span&gt;
-&lt;span class="c1"&gt;#3移除SSH Keys&lt;/span&gt;
-&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="sr"&gt;/etc/ss&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="o"&gt;/*&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="c1"&gt;#4.清楚日志文件&lt;/span&gt;
-&lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="sr"&gt;/dev/nu&lt;/span&gt;&lt;span class="n"&gt;ll&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="sr"&gt;/var/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;audit&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;audit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="sr"&gt;/dev/nu&lt;/span&gt;&lt;span class="n"&gt;ll&lt;/span&gt;
-&lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="sr"&gt;/dev/nu&lt;/span&gt;&lt;span class="n"&gt;ll&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="sr"&gt;/var/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;wtmp&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="sr"&gt;/dev/nu&lt;/span&gt;&lt;span class="n"&gt;ll&lt;/span&gt;
-&lt;span class="n"&gt;logrotate&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;logrotate&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="sr"&gt;/dev/nu&lt;/span&gt;&lt;span class="n"&gt;ll&lt;/span&gt;
-&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="sr"&gt;/var/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/*-*&lt;/span&gt; &lt;span class="sr"&gt;/var/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="n"&gt;gz&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="sr"&gt;/dev/nu&lt;/span&gt;&lt;span class="n"&gt;ll&lt;/span&gt;
-
-&lt;span class="c1"&gt;#5.清楚历史记录&lt;/span&gt;
-&lt;span class="n"&gt;history&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;
-&lt;span class="n"&gt;unset&lt;/span&gt; &lt;span class="no"&gt;HISTFILE&lt;/span&gt;
-&lt;span class="c1"&gt;#6.&lt;/span&gt;
-
-
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;SELINUX=disabled&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="sr"&gt;/etc/se&lt;/span&gt;&lt;span class="n"&gt;linux&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;SELINUXTYPE=targeted&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="sr"&gt;/etc/se&lt;/span&gt;&lt;span class="n"&gt;linux&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;*               soft    nproc             65535&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="sr"&gt;/etc/se&lt;/span&gt;&lt;span class="n"&gt;curity&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;limits&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;*               hard    nproc             65535&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="sr"&gt;/etc/se&lt;/span&gt;&lt;span class="n"&gt;curity&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;limits&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;*               soft    nofile             65535&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="sr"&gt;/etc/se&lt;/span&gt;&lt;span class="n"&gt;curity&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;limits&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;*               hard    nofile             65535&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="sr"&gt;/etc/se&lt;/span&gt;&lt;span class="n"&gt;curity&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;limits&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
-&lt;span class="sr"&gt;/etc/ini&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;iptables&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
-&lt;span class="n"&gt;chkconfig&lt;/span&gt; &lt;span class="n"&gt;iptables&lt;/span&gt; &lt;span class="n"&gt;off&lt;/span&gt; 
-
-&lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="n"&gt;lrzsz&lt;/span&gt; &lt;span class="n"&gt;wget&lt;/span&gt; &lt;span class="n"&gt;epel&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt; &lt;span class="n"&gt;ntpdate&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;
-&lt;span class="c1"&gt;#配置时间同步&lt;/span&gt;
-&lt;span class="n"&gt;ntpdate&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;nist&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gov&lt;/span&gt;
-&lt;span class="n"&gt;hwclock&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;systohc&lt;/span&gt;
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;0 0 * * * root /usr/sbin/ntpdate time-a.nist.gov&amp;quot;&lt;/span&gt;  &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;  &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;crontab&lt;/span&gt;
-&lt;span class="c1"&gt;#SSH &lt;/span&gt;
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;UseDNS no&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="sr"&gt;/etc/ss&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sshd_config&lt;/span&gt;
-&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;StrictHostKeyChecking no&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="sr"&gt;/etc/ss&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ssh_config&lt;/span&gt;
-&lt;span class="sr"&gt;/etc/ini&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sshd&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
-&lt;span class="c1"&gt;#配置阿里云镜像源&lt;/span&gt;
-&lt;span class="n"&gt;mv&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;yum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="no"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;yum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="no"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;backup&lt;/span&gt;
-&lt;span class="n"&gt;wget&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;O&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;yum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="no"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt; &lt;span class="ss"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sr"&gt;//mi&lt;/span&gt;&lt;span class="n"&gt;rrors&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;aliyun&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="no"&gt;Centos&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;
-&lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;clean&lt;/span&gt; &lt;span class="n"&gt;all&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;makecache&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;update&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; 
-
-
-
-&lt;span class="c1"&gt;#去除主机名相关配置&lt;/span&gt;
-&lt;span class="c1"&gt;#这样做是为了后面利用该Template创建的Instance能够自动生成特有的主机名&lt;/span&gt;
-&lt;span class="c1"&gt;#vim /etc/hosts&lt;/span&gt;
-&lt;span class="err"&gt;注释或删除以下内容&lt;/span&gt;
-&lt;span class="c1"&gt;#127.0.1.1 Template-Instance.cs1cloud.internal Template-Instance&lt;/span&gt;
-
-&lt;span class="err"&gt;将&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;hostname&lt;/span&gt;&lt;span class="err"&gt;文件更名或删除&lt;/span&gt;
-&lt;span class="n"&gt;ubuntu&lt;/span&gt;&lt;span class="vi"&gt;@Template&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="ss"&gt;Instance&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;mv&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;hostname&lt;/span&gt; &lt;span class="sr"&gt;/etc/&lt;/span&gt;&lt;span class="n"&gt;hostname&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;template&lt;/span&gt;
-
-&lt;span class="c1"&gt;#关闭实例&lt;/span&gt;
-&lt;span class="c1"&gt;#sync&lt;/span&gt;
-&lt;span class="c1"&gt;#shutdown -h now&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;安装openssh client和server (通过View console)
-ubuntu@Template-Instance:~$ sudo apt-get install ssh&lt;/p&gt;
-&lt;p&gt;后面的步骤就可以通过SSH来完成了。&lt;/p&gt;
-&lt;p&gt;配置国内的网易镜像源
-ubuntu@Template-Instance:~$ sudo sed -i s/us.archive.ubuntu.com/mirrors.163.com/g /etc/apt/sources.list
-ubuntu@Template-Instance:~$ sudo sed -i s/security.ubuntu.com/mirrors.163.com/g /etc/apt/sources.list
-ubuntu@Template-Instance:~$ sudo apt-get update&lt;/p&gt;
-&lt;p&gt;配置sudo用户组免密码切换
-ubuntu@Template-Instance:~$ sudo visudo
-%sudo ALL=(ALL:ALL) NOPASSWD:ALL
-%admin ALL=(ALL) NOPASSWD:ALL&lt;/p&gt;
-&lt;p&gt;cccc
-关闭Instance
-ubuntu@Template-Instance:~$ sudo sync
-ubuntu@Template-Instance:~$ sudo poweroff&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h3&gt;安装windows模板&lt;/h3&gt;
-&lt;p&gt;参考： http://cloudstack-administration.readthedocs.org/zh_CN/latest/templates.html#system-preparation-for-windows-server-2003-r2&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;问题1：
-上传镜像Connection timed out
-： 因为二级存储配置错误&lt;/p&gt;
-&lt;p&gt;2.删除默认的网络导致系统VM无法启动
-有时因为各种原因，例如在控制台错误的配置了一些数据，需要重新初始化时，可以删除 CloudStack 的数据库，步骤如下：
-在命令行下：
-mysql –u root &lt;password&gt;
-mysql&amp;gt; drop database cloud; drop database cloud_usage;&lt;/p&gt;
-&lt;h1&gt;cloud-setup-databases cloud:&lt;dbpassword&gt;@localhost --deploy-as=root:&lt;password&gt;&lt;/h1&gt;
-&lt;h1&gt;cloud-setup-management&lt;/h1&gt;
-&lt;p&gt;然后重复本节的操作。
-附：CloudStack 的 Web Console 界面是可以定制化的。&lt;/p&gt;
-&lt;p&gt;问题3：虚拟机无法访问
-需要设置默认安全策略&lt;/p&gt;
-&lt;h2&gt;问题4： 销毁VM 但是镜像还是存在&lt;/h2&gt;
-&lt;p&gt;是因为cloudstack 默认情况需要在销毁VM实例24小时后才正式删除，防止普通账户误删除操作，若需要可以更改"全局参数延迟时间"实现快速删除
-调整全局设置expunge.delay 和expungeinterval 并重启cloustack&lt;/p&gt;
-&lt;h2&gt;&lt;strong&gt;问题5：VM Stop 和delete CPU和内存资源不释放&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;capacity.skipcounting.hours    ---Time (in seconds) to wait before release VM's cpu and memory when VM in stopped state 3600    &lt;/p&gt;
-&lt;p&gt;调整：VM Stop和释放CPU内存资源之间的时间间隔（秒）；类型：整数；默认：3600
-check.pod.cidrs&lt;/p&gt;
-&lt;h2&gt;问题6：VM卷快照和VM快照的问题&lt;/h2&gt;
-&lt;p&gt;http://ask.cloudstack-china.org/question/166  参考
-此问题，因为你的qemu-img版本问题，不支持“-s”参数，导致快照失败。&lt;/p&gt;
-&lt;p&gt;CloudStack针对kvm虚拟机的卷做快照时，使用qemu-img -s 命令，而在rhel、centos新的发行版中，貌似把“-s”参数取消了（或者使用了其他参数）。
-具体信息，可查看官方bug说明：https://issues.apache.org/jira ... -7300&lt;/p&gt;
-&lt;p&gt;rhel、centos 6.x版本的，可以使用附件中的qemu-img的包，
-从该包中提取qemu-img程序，并覆盖到kvm主机中，重启libvirtd即可。
-或者用该链接中下载：
-http://vault.centos.org/6.4/up ... 4.rpm
-qemu-img-0.12_.1_.2-2_.355_.el6_4_4_.1_.x86_64_.rar&lt;/p&gt;
-&lt;h3&gt;参考文档&lt;/h3&gt;
-&lt;p&gt;http://www.oschina.net/question/54100_137627?fromerr=rUUWPFjj
-http://www.ibm.com/developerworks/cn/cloud/library/1303_chenyz_cloudstack/
-http://my.oschina.net/fufangchun/blog/337695?fromerr=qxwfb3Fo
-http://54im.com/%E4%BA%91%E8%AE%A1%E7%AE%97/cloudstack/%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2cloudstackcentos6-5%E5%AE%89%E8%A3%85cloudstack-4-3%E4%B9%8B%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3.html
-http://54im.com/%E4%BA%91%E8%AE%A1%E7%AE%97/cloudstack/%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2cloudstackcentos6-5%E5%AE%89%E8%A3%85cloudstack-4-3%E4%B9%8B%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3.html 比较详细的介绍&lt;/p&gt;
-&lt;p&gt;http://www.openwebit.com/c/common-cloudstack-issues-and-their-solutions/   cloudstack 常见的问题
-http://bbs.chinaunix.net/thread-4065267-1-1.html 常见问题&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 18 Mar 2015 10:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2015-03-18:pages/2015/03/18/CloudStack_install/</guid><category>CloudStack</category></item><item><title>docker(一) 安装</title><link>http://www.feisblog.com/pages/2015/01/10/docker_install/</link><description>&lt;h1&gt;安装和使用docker&lt;/h1&gt;
+2.安装网络 …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 18 Mar 2015 10:30:00 +0800</pubDate><guid isPermaLink="false">tag:None,2015-03-18:feisblog.com/pages/2015/03/18/CloudStack_install/</guid><category>CloudStack</category></item><item><title>docker(一) 安装</title><link>feisblog.com/pages/2015/01/10/docker_install/</link><description>&lt;h1&gt;安装和使用docker&lt;/h1&gt;
 &lt;p&gt;介绍：
-&lt;img alt="docker" src="/img/docker.png" /&gt;
+&lt;img alt="docker" src="/img/docker.png"&gt;
 Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）。几乎没有性能开销,可以很容易地在机器和数据中心中运行。最重要的是,他们不依赖于任何语言、框架或包装系统。&lt;/p&gt;
-&lt;p&gt;不要忘本。 最重要是变成自己的知识，而&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Sat, 10 Jan 2015 10:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2015-01-10:pages/2015/01/10/docker_install/</guid><category>puppet</category></item><item><title>Puppet(二)简单安装配置Apache</title><link>http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/</link><description>&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
-&lt;p&gt;操作系统：CentOS6.6&lt;br /&gt;
-master.feisblog.com 192.168.212.100 &lt;br /&gt;
+&lt;p&gt;不要忘本。 最重要是变成自己的知识，而&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Sat, 10 Jan 2015 10:30:00 +0800</pubDate><guid isPermaLink="false">tag:None,2015-01-10:feisblog.com/pages/2015/01/10/docker_install/</guid><category>puppet</category></item><item><title>Puppet(二)简单安装配置Apache</title><link>feisblog.com/pages/2015/01/08/puppet_install_Apache/</link><description>&lt;h1&gt;Puppet(二)简单安装配置Apache&lt;/h1&gt;
+&lt;p&gt;操作系统：CentOS6.6&lt;br&gt;
+master.feisblog.com 192.168.212.100 &lt;br&gt;
 agent.feisblog.com  192.168.212.110&lt;/p&gt;
 &lt;h2&gt;1. 创建模块目录&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#mkdir -p /etc/puppet/modules/httpd/{manifests,templates,files}&lt;/code&gt;&lt;/p&gt;
 &lt;h2&gt;2. 创建安装httpd类&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/install.pp &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/install.pp &lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
      &lt;span class="n"&gt;package&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
        &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;present&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -478,105 +73,12 @@ agent.feisblog.com  192.168.212.110&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2&gt;3. 创建启动httpd服务类&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/service.pp  &lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;running&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;hasstatus&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;hasrestart&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;enable&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Class&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;httpd::install&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;4. 创建httpd 配置文件类，配置文件通过puppet获取（目录：/etc/puppet/modules/httpd/files/httpd.conf）&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/conf.pp&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;httpd.conf&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="k"&gt;ensure&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;present&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;owner&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;root&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;mode&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;644&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/etc/httpd/conf/httpd.conf&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;puppet:///modules/httpd/httpd.conf&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Class&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;httpd::install&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-    &lt;span class="n"&gt;notify&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;Class&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;httpd::service&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;5. 创建主配置文件init.pp&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/modules/httpd/manifests/init.pp&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
-    &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;6. 配置客户端节点&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/manifests/nodes/agent.feisblog.com.pp&lt;/span&gt;
-&lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;agent.feisblog.com&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-   &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;7. 将节点载入puppet的site.pp 文件&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#vim /etc/puppet/manifests/site.pp&lt;/span&gt;
-&lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;nodes/agent.feisblog.com.pp&amp;quot;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;8. 在agent端&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com --noop&lt;/code&gt;          &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;#puppet agent --test --server master.feisblog.com&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Thu, 08 Jan 2015 10:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2015-01-08:pages/2015/01/08/puppet_install_Apache/</guid><category>puppet</category></item><item><title>Puppet(一) 安装</title><link>http://www.feisblog.com/pages/2015/01/07/puppet_install/</link><description>&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
-&lt;p&gt;操作系统：Centos6.6&lt;br /&gt;
+&lt;h2&gt;3. 创建启动httpd服务类 …&lt;/h2&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Thu, 08 Jan 2015 10:30:00 +0800</pubDate><guid isPermaLink="false">tag:None,2015-01-08:feisblog.com/pages/2015/01/08/puppet_install_Apache/</guid><category>puppet</category></item><item><title>Puppet(一) 安装</title><link>feisblog.com/pages/2015/01/07/puppet_install/</link><description>&lt;h1&gt;Puppet(一) 安装&lt;/h1&gt;
+&lt;p&gt;操作系统：Centos6.6&lt;br&gt;
 --------------------- | -------------
 master.feisblog.com   | 192.168.212.100
 agent.feisblog.com    | 192.168.212.110&lt;/p&gt;
 &lt;h2&gt;1安装Centos EPEL 源&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;#rpm -ivh  http://mirrors.yun-idc.com/epel/6/x86_64/epel-release-6-8.noarch.rpm&lt;/code&gt;   &lt;/p&gt;
 &lt;h2&gt;2.安装puppetLabs 源 ##&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;#rpm -ivh http://yum.puppetlabs.com/el/6Server/products/x86_64/puppetlabs-release-6-11.noarch.rpm&lt;/code&gt;   &lt;/p&gt;
-&lt;h2&gt;3.安装服务器端&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;#yum install puppet-server&lt;/code&gt; &lt;br /&gt;
-检查安装： &lt;br /&gt;
-&lt;code&gt;#puppet -V&lt;/code&gt; &lt;br /&gt;
-&lt;code&gt;#facter -v&lt;/code&gt;   &lt;/p&gt;
-&lt;h2&gt;4.在客户端   ##&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;#yum install puppet&lt;/code&gt;   &lt;/p&gt;
-&lt;h2&gt;5.配置&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;5.1 主机名和host 文件的修改   &lt;/li&gt;
-&lt;li&gt;5.2 设置NTP时间同步 &lt;br /&gt;
-    在crontab中加入：     &lt;br /&gt;
-&lt;code&gt;*/10 * * * *  ntpdate -s time.nist.gov&lt;/code&gt;  &lt;/li&gt;
-&lt;li&gt;5.3 配置site.pp &lt;br /&gt;
-&lt;code&gt;#vim /etc/puppet/manifests/site.pp&lt;/code&gt;   &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
-    &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;puppettest1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
-        &lt;span class="n"&gt;content&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="no"&gt;Hello&lt;/span&gt; &lt;span class="no"&gt;World&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;6.启动服务&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#/etc/init.d/puppetmaster start&lt;/span&gt;
-&lt;span class="c1"&gt;#chkconfig puppetmaster on  &lt;/span&gt;
-&lt;span class="c1"&gt;#/etc/init.d/puppet start &lt;/span&gt;
-&lt;span class="c1"&gt;#chkconfig puppet on &lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;7.客户端测试   ##&lt;/h2&gt;
-&lt;p&gt;首先是发起验证&lt;br /&gt;
-&lt;code&gt;# puppet agent --test --server server&lt;/code&gt;  &lt;br /&gt;
-服务器端完成验证    &lt;br /&gt;
-&lt;code&gt;#puppet cert --list&lt;/code&gt; &lt;br /&gt;
-&lt;code&gt;#puppet cert sign agent.feisblog.com&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 07 Jan 2015 10:30:00 +0800</pubDate><guid>tag:www.feisblog.com,2015-01-07:pages/2015/01/07/puppet_install/</guid><category>puppet</category></item></channel></rss>
+&lt;p&gt;&lt;code&gt;#rpm -ivh http://yum.puppetlabs.com/el/6Server/products/x86_64/puppetlabs-release-6-11.noarch …&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Kevin</dc:creator><pubDate>Wed, 07 Jan 2015 10:30:00 +0800</pubDate><guid isPermaLink="false">tag:None,2015-01-07:feisblog.com/pages/2015/01/07/puppet_install/</guid><category>puppet</category></item></channel></rss>

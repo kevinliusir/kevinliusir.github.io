@@ -4,154 +4,154 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitem
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>http://www.feisblog.com/</loc>
-<lastmod>2017-05-24T11:43:13-00:00</lastmod>
+<loc>feisblog.com/</loc>
+<lastmod>2018-08-07T17:09:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/archives.html</loc>
-<lastmod>2017-05-24T11:43:13-00:00</lastmod>
+<loc>feisblog.com/archives.html</loc>
+<lastmod>2018-08-07T17:09:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/tags.html</loc>
-<lastmod>2017-05-24T11:43:13-00:00</lastmod>
+<loc>feisblog.com/tags.html</loc>
+<lastmod>2018-08-07T17:09:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/categories.html</loc>
-<lastmod>2017-05-24T11:43:13-00:00</lastmod>
+<loc>feisblog.com/categories.html</loc>
+<lastmod>2018-08-07T17:09:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/pages/2017/05/22/Docker-EBK/</loc>
+<loc>feisblog.com/pages/2017/05/22/Docker-EBK/</loc>
 <lastmod>2017-05-22T09:53:25+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</loc>
+<loc>feisblog.com/pages/2017/03/15/Docker_Machine_Create_Swarm_Cluster/</loc>
 <lastmod>2017-03-15T23:30:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/pages/2015/04/08/disconf/</loc>
+<loc>feisblog.com/pages/2015/04/08/disconf/</loc>
 <lastmod>2015-04-08T10:30:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/pages/2015/03/18/CloudStack_install/</loc>
+<loc>feisblog.com/pages/2015/03/18/CloudStack_install/</loc>
 <lastmod>2015-03-18T10:30:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/pages/2015/01/10/docker_install/</loc>
+<loc>feisblog.com/pages/2015/01/10/docker_install/</loc>
 <lastmod>2015-01-10T10:30:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/pages/2015/01/08/puppet_install_Apache/</loc>
+<loc>feisblog.com/pages/2015/01/08/puppet_install_Apache/</loc>
 <lastmod>2015-01-08T10:30:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/pages/2015/01/07/puppet_install/</loc>
+<loc>feisblog.com/pages/2015/01/07/puppet_install/</loc>
 <lastmod>2015-01-07T10:30:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/category/docker.html</loc>
+<loc>feisblog.com/category/docker.html</loc>
 <lastmod>2017-03-15T23:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/category/wei-fu-wu.html</loc>
+<loc>feisblog.com/category/wei-fu-wu.html</loc>
 <lastmod>2015-04-08T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/category/xu-ni-hua.html</loc>
+<loc>feisblog.com/category/xu-ni-hua.html</loc>
 <lastmod>2015-01-10T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/category/yun-ji-suan.html</loc>
+<loc>feisblog.com/category/yun-ji-suan.html</loc>
 <lastmod>2015-03-18T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/category/yun-wei-zi-dong-hua.html</loc>
+<loc>feisblog.com/category/yun-wei-zi-dong-hua.html</loc>
 <lastmod>2017-05-22T09:53:25+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/tag/elk.html</loc>
+<loc>feisblog.com/tag/elk.html</loc>
 <lastmod>2017-05-22T09:53:25+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/tag/docker.html</loc>
+<loc>feisblog.com/tag/docker.html</loc>
 <lastmod>2017-03-15T23:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/tag/cloudstack.html</loc>
+<loc>feisblog.com/tag/cloudstack.html</loc>
 <lastmod>2015-03-18T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/tag/puppet.html</loc>
+<loc>feisblog.com/tag/puppet.html</loc>
 <lastmod>2015-01-10T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/tag/disconf.html</loc>
+<loc>feisblog.com/tag/disconf.html</loc>
 <lastmod>2015-04-08T10:30:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.feisblog.com/author/kevin.html</loc>
+<loc>feisblog.com/author/kevin.html</loc>
 <lastmod>2017-05-22T09:53:25+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog</title><link href="http://www.feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/yun-ji-suan.atom.xml" rel="self"></link><id>http://www.feisblog.com/</id><updated>2015-03-18T10:30:00+08:00</updated><entry><title>CloudStack_install</title><link href="http://www.feisblog.com/pages/2015/03/18/CloudStack_install/" rel="alternate"></link><updated>2015-03-18T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2015-03-18:pages/2015/03/18/CloudStack_install/</id><summary type="html">&lt;h1&gt;CloudStack的安装和使用&lt;/h1&gt;
-&lt;hr /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog - 云计算</title><link href="feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/yun-ji-suan.atom.xml" rel="self"></link><id>feisblog.com/</id><updated>2015-03-18T10:30:00+08:00</updated><entry><title>CloudStack_install</title><link href="feisblog.com/pages/2015/03/18/CloudStack_install/" rel="alternate"></link><published>2015-03-18T10:30:00+08:00</published><updated>2015-03-18T10:30:00+08:00</updated><author><name>Kevin</name></author><id>tag:None,2015-03-18:feisblog.com/pages/2015/03/18/CloudStack_install/</id><summary type="html">&lt;h1&gt;CloudStack的安装和使用&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2&gt;目录&lt;/h2&gt;
+&lt;h3&gt;1.CloudStack简介&lt;/h3&gt;
+&lt;h3&gt;先决条件&lt;/h3&gt;
+&lt;p&gt;至少一个支持硬件虚拟化的计算机。如果是个人电脑，在主板bios里面开启下虚拟化。
+CentOS 6.4 x86_64 的 minimal install CD &lt;a href="http://mirrors.kernel.org/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso"&gt;http://mirrors.kernel.org/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso&lt;/a&gt;
+一个以xxx.xxx.xxx.1/24作为网关的C类地址并且该网络中不能存在DHCP服务器；运行Cloudstack 的机器不能使用动态地址。这样做只是为了简单起见，我的环境中是192.168.1.0/24网络。&lt;/p&gt;
+&lt;h3&gt;安装和规划cloudstack&lt;/h3&gt;
+&lt;p&gt;1.安装CentOS 6.7 x86_64 最小化安装
+2.安装网络 …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;CloudStack的安装和使用&lt;/h1&gt;
+&lt;hr&gt;
 &lt;h2&gt;目录&lt;/h2&gt;
 &lt;h3&gt;1.CloudStack简介&lt;/h3&gt;
 &lt;h3&gt;先决条件&lt;/h3&gt;
@@ -23,7 +33,7 @@ CentOS 6.4 x86_64 的 minimal install CD &lt;a href="http://mirrors.kernel.org/c
 &lt;p&gt;/secondary &lt;em&gt;(rw,async,no_root_squash)
 /primary &lt;/em&gt;(rw,async,no_root_squash)
 自己测试玩玩的话，可以这样配置nfs，生产环境不能这样， * 表示所以客户端都能挂载这2个目录，当然这里把ip固定死也不是很好的解决方案，毕竟虚拟机也是要能挂载二级存储的，可以使用防火墙或者hosts.allow deny来控制&lt;/p&gt;
-&lt;p&gt;FAS2220A 作为/primary&lt;br /&gt;
+&lt;p&gt;FAS2220A 作为/primary&lt;br&gt;
 FAS2220B 作为/secondary&lt;/p&gt;
 &lt;p&gt;安装 cloudstack&lt;/p&gt;
 &lt;p&gt;cloudstack-setup-databases cloud:whfdc027@localhost --deploy-as=root:whfdc027&lt;/p&gt;
@@ -51,7 +61,7 @@ One side note: You will need to delete the UUID field in the xml file if you int
 &lt;p&gt;http://www.ibm.com/support/knowledgecenter/linuxonibm/liaat/liaatsecstorotherdir.htm&lt;/p&gt;
 &lt;p&gt;https://ask.fedoraproject.org/en/question/9584/while-using-libvirt-how-can-i-use-a-location-other-than-varliblibvirtimages-to-store-my-images/&lt;/p&gt;
 &lt;p&gt;http://ask.xmodulo.com/change-default-location-libvirt-vm-images.html&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="vi"&gt;@cloud&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;agent01&lt;/span&gt; &lt;span class="n"&gt;images&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c1"&gt;# virsh pool-list&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="vi"&gt;@cloud&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;agent01&lt;/span&gt; &lt;span class="n"&gt;images&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c1"&gt;# virsh pool-list&lt;/span&gt;
 &lt;span class="no"&gt;Name&lt;/span&gt;                 &lt;span class="no"&gt;State&lt;/span&gt;      &lt;span class="no"&gt;Autostart&lt;/span&gt; 
 &lt;span class="o"&gt;-----------------------------------------&lt;/span&gt;
 &lt;span class="n"&gt;acd2c7fb&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;45&lt;/span&gt;&lt;span class="n"&gt;dc&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;d1c&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;901&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mo"&gt;060&lt;/span&gt;&lt;span class="n"&gt;df1248434&lt;/span&gt; &lt;span class="n"&gt;active&lt;/span&gt;     &lt;span class="n"&gt;no&lt;/span&gt;        
@@ -163,7 +173,7 @@ NFS带宽如何？NFS 到服务器最好使用1G带宽
 &lt;p&gt;1.通过ISO 安装完操作系统
 2.修改操作系统默认配置
 http://cloudstack-administration.readthedocs.org/zh_CN/latest/templates.html 参考&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#1.修改网络配置文件&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#1.修改网络配置文件&lt;/span&gt;
 &lt;span class="c1"&gt;#vim /etc/sysconfig/network-scripts/ifcfg-eth0&lt;/span&gt;
 &lt;span class="no"&gt;DEVICE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;eth0&lt;/span&gt;
 &lt;span class="no"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="no"&gt;Ethernet&lt;/span&gt;
@@ -241,10 +251,10 @@ ubuntu@Template-Instance:~$ sudo visudo
 关闭Instance
 ubuntu@Template-Instance:~$ sudo sync
 ubuntu@Template-Instance:~$ sudo poweroff&lt;/p&gt;
-&lt;hr /&gt;
+&lt;hr&gt;
 &lt;h3&gt;安装windows模板&lt;/h3&gt;
 &lt;p&gt;参考： http://cloudstack-administration.readthedocs.org/zh_CN/latest/templates.html#system-preparation-for-windows-server-2003-r2&lt;/p&gt;
-&lt;hr /&gt;
+&lt;hr&gt;
 &lt;p&gt;问题1：
 上传镜像Connection timed out
 ： 因为二级存储配置错误&lt;/p&gt;
@@ -283,4 +293,4 @@ http://my.oschina.net/fufangchun/blog/337695?fromerr=qxwfb3Fo
 http://54im.com/%E4%BA%91%E8%AE%A1%E7%AE%97/cloudstack/%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2cloudstackcentos6-5%E5%AE%89%E8%A3%85cloudstack-4-3%E4%B9%8B%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3.html
 http://54im.com/%E4%BA%91%E8%AE%A1%E7%AE%97/cloudstack/%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2cloudstackcentos6-5%E5%AE%89%E8%A3%85cloudstack-4-3%E4%B9%8B%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3.html 比较详细的介绍&lt;/p&gt;
 &lt;p&gt;http://www.openwebit.com/c/common-cloudstack-issues-and-their-solutions/   cloudstack 常见的问题
-http://bbs.chinaunix.net/thread-4065267-1-1.html 常见问题&lt;/p&gt;</summary><category term="CloudStack"></category></entry></feed>
+http://bbs.chinaunix.net/thread-4065267-1-1.html 常见问题&lt;/p&gt;</content><category term="CloudStack"></category></entry></feed>
