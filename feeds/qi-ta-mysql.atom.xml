@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Kevin's Blog - 其他/mysql</title><link href="http://www.feisblog.com/" rel="alternate"></link><link href="http://www.feisblog.com/feeds/qi-ta-mysql.atom.xml" rel="self"></link><id>http://www.feisblog.com/</id><updated>2018-08-07T17:28:00+08:00</updated><entry><title>install Powershell</title><link href="http://www.feisblog.com/pages/2018/08/07/powershell/" rel="alternate"></link><published>2018-08-07T17:28:00+08:00</published><updated>2018-08-07T17:28:00+08:00</updated><author><name>Kevin</name></author><id>tag:www.feisblog.com,2018-08-07:/pages/2018/08/07/powershell/</id><summary type="html">&lt;h1&gt;安装PowerShell组件&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2&gt;typora-root-url: ./&lt;/h2&gt;
+&lt;h3&gt;安装PowerShell组件&lt;/h3&gt;
+&lt;h4&gt;说明&lt;/h4&gt;
+&lt;p&gt;对于大多数操作系统版本，Powershell组件都是默认安装的，只有Windows Server 2008，需要手动添加安装。&lt;/p&gt;
+&lt;h4&gt;安装方法&lt;/h4&gt;
+&lt;p&gt;1.打开"控制面板"-管理工具&lt;/p&gt;
+&lt;p&gt;2.打开"服务器管理器"&lt;/p&gt;
+&lt;p&gt;3.选择“功能”模块，点击"添加功能"&lt;/p&gt;
+&lt;p&gt;&lt;img alt="001" src="/001.png"&gt;&lt;/p&gt;
+&lt;p&gt;4.找到"Windows PowerShell"项，勾选后安装&lt;/p&gt;
+&lt;p&gt;&lt;img alt="002" src="/002.png"&gt;&lt;/p&gt;
+&lt;p&gt;5.安装成功后，重启系统即可&lt;/p&gt;</summary><content type="html">&lt;h1&gt;安装PowerShell组件&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2&gt;typora-root-url: ./&lt;/h2&gt;
+&lt;h3&gt;安装PowerShell组件&lt;/h3&gt;
+&lt;h4&gt;说明&lt;/h4&gt;
+&lt;p&gt;对于大多数操作系统版本，Powershell组件都是默认安装的，只有Windows Server 2008，需要手动添加安装。&lt;/p&gt;
+&lt;h4&gt;安装方法&lt;/h4&gt;
+&lt;p&gt;1.打开"控制面板"-管理工具&lt;/p&gt;
+&lt;p&gt;2.打开"服务器管理器"&lt;/p&gt;
+&lt;p&gt;3.选择“功能”模块，点击"添加功能"&lt;/p&gt;
+&lt;p&gt;&lt;img alt="001" src="/001.png"&gt;&lt;/p&gt;
+&lt;p&gt;4.找到"Windows PowerShell"项，勾选后安装&lt;/p&gt;
+&lt;p&gt;&lt;img alt="002" src="/002.png"&gt;&lt;/p&gt;
+&lt;p&gt;5.安装成功后，重启系统即可&lt;/p&gt;</content><category term="powershell"></category></entry></feed>
