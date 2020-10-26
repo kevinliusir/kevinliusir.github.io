@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kevin&#39;s Blog</title>
+    <link>http://www.feisblog.com/</link>
+    <description>Recent content on Kevin&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh_CN</language>
+    <copyright>All rights reserved - 2020</copyright>
+    <lastBuildDate>Thu, 26 Mar 2015 08:47:11 +0100</lastBuildDate>
+    
+	<atom:link href="http://www.feisblog.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>install cloudstack</title>
+      <link>http://www.feisblog.com/iaas/install_cloudstack/</link>
+      <pubDate>Thu, 26 Mar 2015 08:47:11 +0100</pubDate>
+      
+      <guid>http://www.feisblog.com/iaas/install_cloudstack/</guid>
+      <description>CloudStack的安装和使用 目录 1.CloudStack简介 先决条件 至少一个支持硬件虚拟化的计算机。如果是个人电脑，在主板bios里面开</description>
+    </item>
+    
+  </channel>
+</rss>

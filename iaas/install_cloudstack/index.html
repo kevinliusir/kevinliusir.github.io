@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Kevin&#39;s Blog  | install cloudstack</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.3f5912c237ddd38c8e76debe081c7ca7.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+    
+    <meta property="og:title" content="install cloudstack" />
+<meta property="og:description" content="CloudStack的安装和使用 目录 1.CloudStack简介 先决条件 至少一个支持硬件虚拟化的计算机。如果是个人电脑，在主板bios里面开" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.feisblog.com/iaas/install_cloudstack/" />
+<meta property="article:published_time" content="2015-03-26T08:47:11+01:00" />
+<meta property="article:modified_time" content="2015-03-26T08:47:11+01:00" />
+<meta itemprop="name" content="install cloudstack">
+<meta itemprop="description" content="CloudStack的安装和使用 目录 1.CloudStack简介 先决条件 至少一个支持硬件虚拟化的计算机。如果是个人电脑，在主板bios里面开">
+<meta itemprop="datePublished" content="2015-03-26T08:47:11&#43;01:00" />
+<meta itemprop="dateModified" content="2015-03-26T08:47:11&#43;01:00" />
+<meta itemprop="wordCount" content="3578">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="install cloudstack"/>
+<meta name="twitter:description" content="CloudStack的安装和使用 目录 1.CloudStack简介 先决条件 至少一个支持硬件虚拟化的计算机。如果是个人电脑，在主板bios里面开"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="http://www.feisblog.com" class="f3 fw2 hover-white no-underline white-90 dib">
+      Kevin&#39;s Blog
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        IAASS
+      </p>
+      <h1 class="f1 athelas mb1">install cloudstack</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2015-03-26T08:47:11&#43;01:00">March 26, 2015</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id="cloudstack的安装和使用-">CloudStack的安装和使用</h1>
+<hr>
+<h2 id="目录">目录</h2>
+<h3 id="1cloudstack简介">1.CloudStack简介</h3>
+<h3 id="先决条件">先决条件</h3>
+<p>至少一个支持硬件虚拟化的计算机。如果是个人电脑，在主板bios里面开启下虚拟化。
+CentOS 6.4 x86_64 的 minimal install CD <a href="http://mirrors.kernel.org/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso">http://mirrors.kernel.org/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso</a>
+一个以xxx.xxx.xxx.1/24作为网关的C类地址并且该网络中不能存在DHCP服务器；运行Cloudstack 的机器不能使用动态地址。这样做只是为了简单起见，我的环境中是192.168.1.0/24网络。</p>
+<h3 id="安装和规划cloudstack">安装和规划cloudstack</h3>
+<p>1.安装CentOS 6.7 x86_64 最小化安装
+2.安装网络 
+3.配置host文件
+4.关闭selinux
+5.配置NTP 
+6.配置cloudstack 源</p>
+<h3 id="配置nfs-存储">配置NFS 存储</h3>
+<p>主存储和辅助存储我们都使用NFS存储。接下来我们要设置两个NFS共享。首先安装nfs-utils。</p>
+<h1 id="yum-install-nfs-utils">yum install nfs-utils</h1>
+<p>现在我们在NFS服务器上配置两个不同的共享目录。我们需要在/etc/exports文件中分别配置一下。确保这个文件中包含下面内容：</p>
+<p>/secondary *(rw,async,no_root_squash)
+/primary *(rw,async,no_root_squash)</p>
+<p>/secondary *(rw,async,no_root_squash)
+/primary *(rw,async,no_root_squash)
+自己测试玩玩的话，可以这样配置nfs，生产环境不能这样， * 表示所以客户端都能挂载这2个目录，当然这里把ip固定死也不是很好的解决方案，毕竟虚拟机也是要能挂载二级存储的，可以使用防火墙或者hosts.allow deny来控制</p>
+<p>FAS2220A 作为/primary<br>
+FAS2220B 作为/secondary</p>
+<p>安装 cloudstack</p>
+<p>cloudstack-setup-databases cloud:whfdc027@localhost &ndash;deploy-as=root:whfdc027</p>
+<h3 id="cloudstack自定义kvm虚拟化本地存储路径">CloudStack自定义KVM虚拟化本地存储路径</h3>
+<p>方法很简单，修改kvm端 cloudstack agent配置文件agent.properties即可。
+#vim /etc/cloudstack/agent/agent.properties
+local.storage.path=/data/</p>
+<p>如何验证修改成功</p>
+<p>使用软连接 
+cd /var/lib/libvirt
+cp  /var/lib/libvirt/* /data/kvm
+rm -rf boot/ dnsmasq/ filesystems/ lxc/ network/ qemu/ 
+ln -s /data/kvm/* ./</p>
+<p>或者更有效的方法是：</p>
+<p>ln -sf /var/lib/libvirt/images /home/xxx/my_images
+**
+第二种方式**</p>
+<p>添加第二个存储池</p>
+<p>#virsh pool-dumpxml default &gt; pool.xml
+edit pool.xml # with new name and path
+#virsh pool-create pool.xml
+#virsh pool-refresh name
+如果您打算需要删除xml文件如果您打算UUID字段保留默认池
+One side note: You will need to delete the UUID field in the xml file if you intend to keep the default pool - no two pools defined can have the same UUID - but keep the brackets like so: &lsquo;<!-- raw HTML omitted --><!-- raw HTML omitted -->&rsquo;</p>
+<p><a href="http://www.ibm.com/support/knowledgecenter/linuxonibm/liaat/liaatsecstorotherdir.htm">http://www.ibm.com/support/knowledgecenter/linuxonibm/liaat/liaatsecstorotherdir.htm</a></p>
+<p><a href="https://ask.fedoraproject.org/en/question/9584/while-using-libvirt-how-can-i-use-a-location-other-than-varliblibvirtimages-to-store-my-images/">https://ask.fedoraproject.org/en/question/9584/while-using-libvirt-how-can-i-use-a-location-other-than-varliblibvirtimages-to-store-my-images/</a></p>
+<p><a href="http://ask.xmodulo.com/change-default-location-libvirt-vm-images.html">http://ask.xmodulo.com/change-default-location-libvirt-vm-images.html</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Ruby" data-lang="Ruby"><span style="color:#f92672">[</span>root@cloud<span style="color:#f92672">-</span>agent01 images<span style="color:#f92672">]</span><span style="color:#75715e"># virsh pool-list</span>
+<span style="color:#66d9ef">Name</span>                 <span style="color:#66d9ef">State</span>      <span style="color:#66d9ef">Autostart</span> 
+<span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span><span style="color:#f92672">-</span>
+acd2c7fb<span style="color:#f92672">-</span><span style="color:#ae81ff">45</span><span style="color:#f92672"></span>dc<span style="color:#f92672">-</span><span style="color:#ae81ff">4</span><span style="color:#f92672"></span>d1c<span style="color:#f92672">-</span><span style="color:#ae81ff">901</span><span style="color:#f92672"></span>a<span style="color:#f92672">-</span><span style="color:#ae81ff">060</span><span style="color:#f92672"></span>df1248434 active     no        
+f9371e71<span style="color:#f92672">-</span>c689<span style="color:#f92672">-</span><span style="color:#ae81ff">3</span><span style="color:#f92672"></span>e12<span style="color:#f92672">-</span>a6a6<span style="color:#f92672">-</span>fadf7712c964 active     no
+
+<span style="color:#75715e">#virsh pool-dumpxml acd2c7fb-45dc-4d1c-901a-060df1248434  &gt; pool.xml</span>
+<span style="color:#75715e">#virsh pool-destroy acd2c7fb-45dc-4d1c-901a-060df1248434</span>
+<span style="color:#75715e">#virsh pool-create pool.xml</span>
+</code></pre></div><p>###############################</p>
+<p>cloudstack-setup-databases cloud:cloud@localhost &ndash;deploy-as=root:qwe123!</p>
+<p>cloudstack-setup-management</p>
+<p>4.8模板
+<a href="http://d21ifhcun6b1t2.cloudfront.net/templates/4.2/systemvmtemplate-2013-06-12-master-kvm.qcow2.bz2">http://d21ifhcun6b1t2.cloudfront.net/templates/4.2/systemvmtemplate-2013-06-12-master-kvm.qcow2.bz2</a></p>
+<p><a href="http://d21ifhcun6b1t2.cloudfront.net/templates/4.8/system">http://d21ifhcun6b1t2.cloudfront.net/templates/4.8/system</a>*.qcow2.bz2</p>
+<p>导入本地模板
+/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt -m /secondary</p>
+<p>/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt<br>
+-m /secondary<br>
+-u <a href="http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-kvm.qcow2.bz2">http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-kvm.qcow2.bz2</a><br>
+-h kvm -F</p>
+<h3 id="安装客户端">安装客户端</h3>
+<p>1.设置host文件和主机名
+#主机名
+sed -i s/HOSTNAME=localhost.localdomain/HOSTNAME=cloud-agent03.fdc.com.cn/g
+#host 文件
+192.168.1.240 cloud-server cloud-server.fdc.com.cn
+192.168.1.241 cloud-agent01 cloud-agent01.fdc.com.cn
+192.168.1.242 cloud-agent02 cloud-agent02.fdc.com.cn
+192.168.1.243 cloud-agent03 cloud-agent03.fdc.com.cn
+192.168.1.244 cloud-agent04 cloud-agent04.fdc.com.cn
+2.关闭selinux &amp;防火墙
+echo &ldquo;SELINUX=disabled&rdquo; &gt; /etc/selinux/config
+echo &ldquo;SELINUXTYPE=targeted&rdquo; &raquo;/etc/selinux/config
+#limit
+echo &ldquo;*               soft    nproc             65535&rdquo; &raquo; /etc/security/limits.conf
+echo &ldquo;*               hard    nproc             65535&rdquo; &raquo; /etc/security/limits.conf
+echo &ldquo;*               soft    nofile             65535&rdquo; &raquo; /etc/security/limits.conf
+echo &ldquo;*               hard    nofile             65535&rdquo; &raquo; /etc/security/limits.conf
+#iptables
+service iptables stop 
+chkconfig iptables off</p>
+<p>3.安装NTP、wget等
+yum install ntp wget epel-release lrzsz -y 
+/etc/init.d/ntpd start
+chkconfig ntpd on</p>
+<p>5.设置SSH 
+echo &ldquo;UseDNS no&rdquo; &raquo; /etc/ssh/sshd_config
+echo &ldquo;StrictHostKeyChecking no&rdquo; &raquo;/etc/ssh/ssh_config
+/etc/init.d/sshd restart</p>
+<p>4.替换阿里云yum源
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+wget -O /etc/yum.repos.d/CentOS-Base.repo <a href="http://mirrors.aliyun.com/repo/Centos-6.repo">http://mirrors.aliyun.com/repo/Centos-6.repo</a>
+yum clean all &amp;&amp; yum makecache &amp;&amp; yum update -y</p>
+<p>4.安装cloud-agent 
+配置cloudstackyum源并安装，我这里下载下来本地安装</p>
+<p>yum localinstall /usr/src/cloudstack-agent-4.8.0-1.el6.x86_64.rpm /usr/src/cloudstack-common-4.8.0-1.el6.x86_64.rpm -y</p>
+<p>rm -rf /usr/src/*.rpm</p>
+<p>6.设置本地存储路径
+mkdir -p /data/kvm/images</p>
+<p>echo &ldquo;local.storage.path=/data/kvm/images/&rdquo; &raquo; /etc/cloudstack/agent/agent.properties
+/etc/init.d/cloudstack-agent restart</p>
+<p>7.配置QEMU
+KVM只有一个相对简单的配置项。我们需要编辑QEMU VNC配置。确保/etc/libvirt/qemu.conf文件有如下所示的行，并将其注释去掉。
+vnc_listen=0.0.0.0</p>
+<p>8.配置Libvirt
+CloudStack使用libvirt管理虚拟机。因此正确的配置libvirt是非常重要的。Libvirt是cloud-agent的一个依赖组件，它应该已经安装好了。</p>
+<p>为了实现动态迁移libvirt需要监听不可靠的TCP连接。还需要关闭libvirts尝试使用组播DNS进行广播。这些都是在 /etc/libvirt/libvirtd.conf文件中进行配置。
+设置下列参数：
+listen_tls = 0
+listen_tcp = 1
+tcp_port = &ldquo;16059&rdquo;
+auth_tcp = &ldquo;none&rdquo;
+mdns_adv = 0
+仅仅在libvirtd.conf中启用”listen_tcp”是不够的，我们还必须修改/etc/sysconfig/libvirtd中的参数:
+取消下行的注释：
+#LIBVIRTD_ARGS=&rdquo;&ndash;listen&rdquo;
+重启libvirt</p>
+<p>#service libvirtd restart
+KVM配置完成结束对KVM的安装和配置之后，接下来需要在CloudStack管理界面中实际配置我们的云。</p>
+<h2 id="heading"></h2>
+<h3 id="2kvm环境搭建">2.KVM环境搭建</h3>
+<p>1.如何规划cloud环境
+NFS带宽如何？NFS 到服务器最好使用1G带宽
+宿主机性能如何？内存，CPU性能？
+如果是本地硬盘，本地硬盘空间如何？是否够用几台服务器的硬盘的存储？
+集群中需要多少个主存储？且总存储量多大？
+每个资源域需要多少个二级存储？</p>
+<h3 id="3kvm-生产应用">3.KVM 生产应用</h3>
+<h3 id="3概念">3.概念</h3>
+<p>Cluster 是多个主机组成的一个集群。同一个 cluster 中的主机有相同的硬件，相同的 Hypervisor，和共用同样的存储。同一个 cluster 中的虚拟机，可以实现无中断服务地从一个主机迁移到另外一个上。</p>
+<h4 id="主存储primary-storage">主存储（Primary Storage）</h4>
+<p>它为该 cluster 中的主机的全部虚拟机提供磁盘卷。一个 cluster 至少有一个一级存储，且在部署时位置要临近主机以提供高性能。</p>
+<h4 id="二级存储">二级存储</h4>
+<p>Secondary Storage VM 二级存储虚拟机简称ssvm， 作为系统虚机的一种，在cloudstack中扮演了很重要的角色，没有它很多功能都无法实现。简单来说ssvm主要用来管理二级存储，也就是对二级存储相关的操作都会通过它来完成。每一个资源域可以有多个SSVM， 当SSVM被删除或停止，它会自动被重建并启动。</p>
+<h3 id="4cloudstack存储在本地">4.Cloudstack存储在本地</h3>
+<p>启用本地存储：
+不启用本地存储话，所有的虚拟机硬盘文件将存在网络存储服务器上，这样可以达到在不停机的情况下动态迁移虚机，保证虚拟机的高可用性。但凡事有利必有弊，如果没有硬件支持的情况下，NFS无法保证高可用性，另外虚机频繁读写的话，性能将受网络约束。因此请谨慎选择。
+注：在“启用本地存储”上打勾的话，会弹出一个提示框。它的意思是系统虚机可以在本地存储上启动也可以在网络存储上启动。如果你想让系统虚机在本地存储上启动，则需要改一个全局参数，如果你想让系统虚机在网络存储上启动，则需要在创建完区域后还必须将网络主存储添加到区域上，系统虚机才能启动。</p>
+<p>再注：“启用本地存储”后远没有它提示框中说的那么简单，你必须之后在“服务提供 – 计算方案”、“服务提供 – 磁盘方案”处添加使用本地存储的方案才能真正使用，否则创建虚拟机必然失败。</p>
+<h3 id="如何优化cloudstack">如何优化cloudstack</h3>
+<h3 id="如何优化kvm">如何优化KVM</h3>
+<h3 id="如何监控cloudstack">如何监控cloudstack</h3>
+<h3 id="本地存储的虚拟机如何动态扩展硬盘">本地存储的虚拟机如何动态扩展硬盘</h3>
+<h3 id="本地存储的虚拟机如何动态扩展内存和cpu">本地存储的虚拟机如何动态扩展内存和CPU</h3>
+<h3 id="创建模板">创建模板</h3>
+<p>1.通过ISO 安装完操作系统
+2.修改操作系统默认配置
+<a href="http://cloudstack-administration.readthedocs.org/zh_CN/latest/templates.html">http://cloudstack-administration.readthedocs.org/zh_CN/latest/templates.html</a> 参考</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Ruby" data-lang="Ruby"><span style="color:#75715e">#1.修改网络配置文件</span>
+<span style="color:#75715e">#vim /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+<span style="color:#66d9ef">DEVICE</span><span style="color:#f92672">=</span>eth0
+<span style="color:#66d9ef">TYPE</span><span style="color:#f92672">=</span><span style="color:#66d9ef">Ethernet</span>
+<span style="color:#66d9ef">BOOTPROTO</span><span style="color:#f92672">=</span>dhcp
+<span style="color:#66d9ef">ONBOOT</span><span style="color:#f92672">=</span>yes
+<span style="color:#75715e">#2.删除MAC与网卡绑定</span>
+<span style="color:#75715e">#rm -f /etc/udev/rules.d/70-persistent-net.rules</span>
+<span style="color:#75715e">#rm -f /etc/udev/rules.d/70-persistent-net.rules</span>
+<span style="color:#75715e">#3移除SSH Keys</span>
+rm <span style="color:#f92672">-</span>f <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/ss</span>h<span style="color:#f92672">/</span><span style="color:#f92672">*</span>key<span style="color:#f92672">*</span>
+<span style="color:#75715e">#4.清楚日志文件</span>
+cat <span style="color:#e6db74">/</span><span style="color:#e6db74">dev</span><span style="color:#e6db74">/nu</span>ll <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">var</span><span style="color:#e6db74">/</span>log<span style="color:#f92672">/</span>audit<span style="color:#f92672">/</span>audit<span style="color:#f92672">.</span>log <span style="color:#ae81ff">2</span><span style="color:#f92672"></span><span style="color:#f92672">&gt;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">dev</span><span style="color:#e6db74">/nu</span>ll
+cat <span style="color:#e6db74">/</span><span style="color:#e6db74">dev</span><span style="color:#e6db74">/nu</span>ll <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">var</span><span style="color:#e6db74">/</span>log<span style="color:#f92672">/</span>wtmp <span style="color:#ae81ff">2</span><span style="color:#f92672"></span><span style="color:#f92672">&gt;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">dev</span><span style="color:#e6db74">/nu</span>ll
+logrotate <span style="color:#f92672">-</span>f <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/</span>logrotate<span style="color:#f92672">.</span>conf <span style="color:#ae81ff">2</span><span style="color:#f92672"></span><span style="color:#f92672">&gt;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">dev</span><span style="color:#e6db74">/nu</span>ll
+rm <span style="color:#f92672">-</span>f <span style="color:#e6db74">/</span><span style="color:#e6db74">var</span><span style="color:#e6db74">/</span>log<span style="color:#f92672">/</span><span style="color:#f92672">*</span><span style="color:#f92672">-</span><span style="color:#f92672">*</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">var</span><span style="color:#e6db74">/</span>log<span style="color:#f92672">/</span><span style="color:#f92672">*</span><span style="color:#f92672">.</span>gz <span style="color:#ae81ff">2</span><span style="color:#f92672"></span><span style="color:#f92672">&gt;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">dev</span><span style="color:#e6db74">/nu</span>ll
+
+<span style="color:#75715e">#5.清楚历史记录</span>
+history <span style="color:#f92672">-</span>c
+unset <span style="color:#66d9ef">HISTFILE</span>
+<span style="color:#75715e">#6.</span>
+
+
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SELINUX=disabled</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/se</span>linux<span style="color:#f92672">/</span>config
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SELINUXTYPE=targeted</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;&gt;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/se</span>linux<span style="color:#f92672">/</span>config
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">*               soft    nproc             65535</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/se</span>curity<span style="color:#f92672">/</span>limits<span style="color:#f92672">.</span>conf
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">*               hard    nproc             65535</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/se</span>curity<span style="color:#f92672">/</span>limits<span style="color:#f92672">.</span>conf
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">*               soft    nofile             65535</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/se</span>curity<span style="color:#f92672">/</span>limits<span style="color:#f92672">.</span>conf
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">*               hard    nofile             65535</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/se</span>curity<span style="color:#f92672">/</span>limits<span style="color:#f92672">.</span>conf
+<span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/ini</span>t<span style="color:#f92672">.</span>d<span style="color:#f92672">/</span>iptables stop
+chkconfig iptables off 
+
+yum install vim lrzsz wget epel<span style="color:#f92672">-</span>release ntpdate <span style="color:#f92672">-</span>y
+<span style="color:#75715e">#配置时间同步</span>
+ntpdate time<span style="color:#f92672">-</span>a<span style="color:#f92672">.</span>nist<span style="color:#f92672">.</span>gov
+hwclock <span style="color:#f92672">-</span><span style="color:#f92672">-</span>systohc
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">0 0 * * * root /usr/sbin/ntpdate time-a.nist.gov</span><span style="color:#e6db74">&#34;</span>  <span style="color:#f92672">&gt;&gt;</span>  <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/</span>crontab
+<span style="color:#75715e">#SSH </span>
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">UseDNS no</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/ss</span>h<span style="color:#f92672">/</span>sshd_config
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">StrictHostKeyChecking no</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;&gt;</span><span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/ss</span>h<span style="color:#f92672">/</span>ssh_config
+<span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/ini</span>t<span style="color:#f92672">.</span>d<span style="color:#f92672">/</span>sshd restart
+<span style="color:#75715e">#配置阿里云镜像源</span>
+mv <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/</span>yum<span style="color:#f92672">.</span>repos<span style="color:#f92672">.</span>d<span style="color:#f92672">/</span><span style="color:#66d9ef">CentOS</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Base</span><span style="color:#f92672">.</span>repo <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/</span>yum<span style="color:#f92672">.</span>repos<span style="color:#f92672">.</span>d<span style="color:#f92672">/</span><span style="color:#66d9ef">CentOS</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Base</span><span style="color:#f92672">.</span>repo<span style="color:#f92672">.</span>backup
+wget <span style="color:#f92672">-</span>O <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/</span>yum<span style="color:#f92672">.</span>repos<span style="color:#f92672">.</span>d<span style="color:#f92672">/</span><span style="color:#66d9ef">CentOS</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Base</span><span style="color:#f92672">.</span>repo <span style="color:#e6db74">http</span>:<span style="color:#e6db74">/</span><span style="color:#e6db74">/mi</span>rrors<span style="color:#f92672">.</span>aliyun<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>repo<span style="color:#f92672">/</span><span style="color:#66d9ef">Centos</span><span style="color:#f92672">-</span><span style="color:#ae81ff">6</span><span style="color:#f92672"></span><span style="color:#f92672">.</span>repo
+yum clean all <span style="color:#f92672">&amp;&amp;</span> yum makecache <span style="color:#f92672">&amp;&amp;</span> yum update <span style="color:#f92672">-</span>y 
+
+
+
+<span style="color:#75715e">#去除主机名相关配置</span>
+<span style="color:#75715e">#这样做是为了后面利用该Template创建的Instance能够自动生成特有的主机名</span>
+<span style="color:#75715e">#vim /etc/hosts</span>
+<span style="color:#960050;background-color:#1e0010">注</span><span style="color:#960050;background-color:#1e0010">释</span><span style="color:#960050;background-color:#1e0010">或</span><span style="color:#960050;background-color:#1e0010">删</span><span style="color:#960050;background-color:#1e0010">除</span><span style="color:#960050;background-color:#1e0010">以</span><span style="color:#960050;background-color:#1e0010">下</span><span style="color:#960050;background-color:#1e0010">内</span><span style="color:#960050;background-color:#1e0010">容</span>
+<span style="color:#75715e">#127.0.1.1 Template-Instance.cs1cloud.internal Template-Instance</span>
+
+<span style="color:#960050;background-color:#1e0010">将</span><span style="color:#f92672">/</span>etc<span style="color:#f92672">/</span>hostname文件更名或删除
+ubuntu@Template<span style="color:#f92672">-</span><span style="color:#e6db74">Instance</span>:<span style="color:#f92672">~</span><span style="color:#960050;background-color:#1e0010">$</span> sudo mv <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/</span>hostname <span style="color:#e6db74">/</span><span style="color:#e6db74">etc</span><span style="color:#e6db74">/</span>hostname<span style="color:#f92672">.</span>template
+
+<span style="color:#75715e">#关闭实例</span>
+<span style="color:#75715e">#sync</span>
+<span style="color:#75715e">#shutdown -h now</span>
+</code></pre></div><p>安装openssh client和server (通过View console)
+ubuntu@Template-Instance:~$ sudo apt-get install ssh</p>
+<p>后面的步骤就可以通过SSH来完成了。</p>
+<p>配置国内的网易镜像源
+ubuntu@Template-Instance:~$ sudo sed -i s/us.archive.ubuntu.com/mirrors.163.com/g /etc/apt/sources.list
+ubuntu@Template-Instance:~$ sudo sed -i s/security.ubuntu.com/mirrors.163.com/g /etc/apt/sources.list
+ubuntu@Template-Instance:~$ sudo apt-get update</p>
+<p>配置sudo用户组免密码切换
+ubuntu@Template-Instance:~$ sudo visudo
+%sudo ALL=(ALL:ALL) NOPASSWD:ALL
+%admin ALL=(ALL) NOPASSWD:ALL</p>
+<p>cccc
+关闭Instance
+ubuntu@Template-Instance:~$ sudo sync
+ubuntu@Template-Instance:~$ sudo poweroff</p>
+<hr>
+<h3 id="安装windows模板">安装windows模板</h3>
+<p>参考： <a href="http://cloudstack-administration.readthedocs.org/zh_CN/latest/templates.html#system-preparation-for-windows-server-2003-r2">http://cloudstack-administration.readthedocs.org/zh_CN/latest/templates.html#system-preparation-for-windows-server-2003-r2</a></p>
+<hr>
+<p>问题1：
+上传镜像Connection timed out
+： 因为二级存储配置错误</p>
+<p>2.删除默认的网络导致系统VM无法启动
+有时因为各种原因，例如在控制台错误的配置了一些数据，需要重新初始化时，可以删除 CloudStack 的数据库，步骤如下：
+在命令行下：
+mysql –u root <!-- raw HTML omitted -->
+mysql&gt; drop database cloud; drop database cloud_usage;
+#cloud-setup-databases cloud:<!-- raw HTML omitted -->@localhost &ndash;deploy-as=root:<!-- raw HTML omitted -->
+#cloud-setup-management
+然后重复本节的操作。
+附：CloudStack 的 Web Console 界面是可以定制化的。</p>
+<p>问题3：虚拟机无法访问
+需要设置默认安全策略</p>
+<h2 id="问题4-销毁vm-但是镜像还是存在-">问题4： 销毁VM 但是镜像还是存在</h2>
+<p>是因为cloudstack 默认情况需要在销毁VM实例24小时后才正式删除，防止普通账户误删除操作，若需要可以更改&quot;全局参数延迟时间&quot;实现快速删除
+调整全局设置expunge.delay 和expungeinterval 并重启cloustack</p>
+<h2 id="问题5vm-stop-和delete-cpu和内存资源不释放-"><strong>问题5：VM Stop 和delete CPU和内存资源不释放</strong></h2>
+<p>capacity.skipcounting.hours	   &mdash;Time (in seconds) to wait before release VM's cpu and memory when VM in stopped state	3600</p>
+<p>调整：VM Stop和释放CPU内存资源之间的时间间隔（秒）；类型：整数；默认：3600
+check.pod.cidrs</p>
+<h2 id="问题6vm卷快照和vm快照的问题-">问题6：VM卷快照和VM快照的问题</h2>
+<p><a href="http://ask.cloudstack-china.org/question/166">http://ask.cloudstack-china.org/question/166</a>  参考
+此问题，因为你的qemu-img版本问题，不支持“-s”参数，导致快照失败。</p>
+<p>CloudStack针对kvm虚拟机的卷做快照时，使用qemu-img -s 命令，而在rhel、centos新的发行版中，貌似把“-s”参数取消了（或者使用了其他参数）。
+具体信息，可查看官方bug说明：https://issues.apache.org/jira &hellip; -7300</p>
+<p>rhel、centos 6.x版本的，可以使用附件中的qemu-img的包，
+从该包中提取qemu-img程序，并覆盖到kvm主机中，重启libvirtd即可。
+或者用该链接中下载：
+<a href="http://vault.centos.org/6.4/up">http://vault.centos.org/6.4/up</a> &hellip; 4.rpm
+qemu-img-0.12_.1_.2-2_.355_.el6_4_4_.1_.x86_64_.rar</p>
+<h3 id="参考文档">参考文档</h3>
+<p><a href="http://www.oschina.net/question/54100_137627?fromerr=rUUWPFjj">http://www.oschina.net/question/54100_137627?fromerr=rUUWPFjj</a>
+<a href="http://www.ibm.com/developerworks/cn/cloud/library/1303_chenyz_cloudstack/">http://www.ibm.com/developerworks/cn/cloud/library/1303_chenyz_cloudstack/</a>
+<a href="http://my.oschina.net/fufangchun/blog/337695?fromerr=qxwfb3Fo">http://my.oschina.net/fufangchun/blog/337695?fromerr=qxwfb3Fo</a>
+<a href="http://54im.com/%E4%BA%91%E8%AE%A1%E7%AE%97/cloudstack/%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2cloudstackcentos6-5%E5%AE%89%E8%A3%85cloudstack-4-3%E4%B9%8B%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3.html">http://54im.com/%E4%BA%91%E8%AE%A1%E7%AE%97/cloudstack/%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2cloudstackcentos6-5%E5%AE%89%E8%A3%85cloudstack-4-3%E4%B9%8B%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3.html</a>
+<a href="http://54im.com/%E4%BA%91%E8%AE%A1%E7%AE%97/cloudstack/%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2cloudstackcentos6-5%E5%AE%89%E8%A3%85cloudstack-4-3%E4%B9%8B%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3.html">http://54im.com/%E4%BA%91%E8%AE%A1%E7%AE%97/cloudstack/%E7%AE%80%E5%8D%95%E9%83%A8%E7%BD%B2cloudstackcentos6-5%E5%AE%89%E8%A3%85cloudstack-4-3%E4%B9%8B%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3.html</a> 比较详细的介绍</p>
+<p><a href="http://www.openwebit.com/c/common-cloudstack-issues-and-their-solutions/">http://www.openwebit.com/c/common-cloudstack-issues-and-their-solutions/</a>   cloudstack 常见的问题
+<a href="http://bbs.chinaunix.net/thread-4065267-1-1.html">http://bbs.chinaunix.net/thread-4065267-1-1.html</a> 常见问题</p>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6">
+      
+      
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://www.feisblog.com" >
+    &copy;  All rights reserved - 2020 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

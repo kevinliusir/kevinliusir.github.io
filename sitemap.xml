@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://www.feisblog.com/iaas/</loc>
+    <lastmod>2015-03-26T08:47:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.feisblog.com/iaas/install_cloudstack/</loc>
+    <lastmod>2015-03-26T08:47:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.feisblog.com/</loc>
+    <lastmod>2015-03-26T08:47:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.feisblog.com/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>http://www.feisblog.com/tags/</loc>
+  </url>
+  
+</urlset>
